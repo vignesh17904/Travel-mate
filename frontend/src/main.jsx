@@ -5,6 +5,7 @@ import App from './App.jsx'
 import { BrowserRouter } from "react-router-dom";
 import { RouterProvider } from "react-router-dom";
 import router from './router.jsx';
+import UserContextProvider from './context/UserContextProvider';
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <UserContextProvider>

@@ -1,0 +1,39 @@
+// src/router.jsx
+import { createBrowserRouter } from "react-router-dom";
+import Landing from "./pages/Landing.jsx"; 
+import CityLayout from "./pages/City/CityLayout.jsx";
+import TouristSpots from "./pages/City/TouristSpots.jsx";
+import Hotels from "./pages/City/Hotels.jsx";
+import Sample1 from "./pages/City/Sample1.jsx";
+import Sample2 from "./pages/City/Sample2.jsx";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Landing />, 
+  },
+  {
+    path: "/:CityName",
+    element: <CityLayout />,
+    children: [
+      {
+        index: true, 
+        element: <TouristSpots />,
+      },
+      {
+        path: "Hotels",
+        element: <Hotels />,
+      },
+      {
+        path: "Sample1",
+        element: <Sample1 />,
+      },
+      {
+        path:"Sample2",
+        element:<Sample2/>
+      }
+    ],
+  },
+]);
+
+export default router;

@@ -1,0 +1,58 @@
+import { apiresponse } from "../utils/apiresponse.js";
+import { fetchphoto } from "../utils/fetchphoto.js";
+import { apierror } from "../utils/apierror.js";
+import { asynchandler } from "../utils/asynchandler.js";
+import { geminiresponse } from "../utils/geminiresponse.js";
+import axios from "axios";
+const touristCache = new Map();
+const gettouristplaces = asynchandler(async (req, res) => {
+  const { placeid } = req.params;
+  if (!placeid) {
+    throw new apierror(400, "Place ID is required");
+  }
+  if (touristCache.has(placeid)) {
+    console.log("Cache hit for place ID:", placeid);
+    return res.status(200).json(
+      new apiresponse(200, { touritems: touristCache.get(placeid) }, "Tourist places fetched from cache")
+    );
+  }
+  const config = {
+    method: "get",
+    url: `https://api.geoapify.com/v2/places?categories=tourism&filter=place:${placeid}&limit=10&apiKey=${process.env.GEOAPIFY_API_KEY}`,
+    headers: {},
+  };
+  try {
+    const responsefromgeoapify = await axios(config);
+    const tour = responsefromgeoapify.data.features;
+    if (tour.length === 0) {
+      throw new apierror(404, "No hotels found for this place");
+    }
+    const touritems = await Promise.all(
+      tour
+      .filter((item) => item.properties.name)
+      .filter((item) => item.properties.formatted)
+      .map(async (item) => (
+                {
+                name: item.properties.name || null,
+                address: item.properties.formatted || null,
+                imageurl: await fetchphoto(`tourist place ${item.properties.name} in ${item.properties.city}`) || null,
+                description : await geminiresponse({placename:item.properties.name, question: "Tell me about this tourist place?",words:20}) || null,
+                }
+            )
+        )
+    );
+    console.log(touritems)
+    // Store the fetched tourist places in the cache
+    touristCache.set(placeid, touritems);
+    res.
+    status(200).json(
+    new apiresponse(200, {touritems}, "Tourist places fetched successfully")
+  );
+  } catch (error) {
+    throw new apierror(400, "Error fetching tourist places from Geoapify");
+  }
+  
+});
+
+
+export { gettouristplaces };

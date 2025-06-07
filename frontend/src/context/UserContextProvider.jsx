@@ -1,5 +1,5 @@
 import React from "react";
-import UserContext from "./userContext.js";
+import UserContext from "./UserContext.js";
 
 const UserContextProvider = ({children}) => {
     const [userLoggedIn, setUserLoggedIn] = React.useState(false);

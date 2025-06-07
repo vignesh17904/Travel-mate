@@ -5,7 +5,9 @@ import {
   AiFillTwitterSquare,
   AiOutlineSearch,
 } from "react-icons/ai";
+import { useNavigate } from "react-router";
 const Home = ()=>{
+  const navigate = useNavigate();
     return (
         <React.Fragment>
       <div className="w-full h-screen relative">
@@ -49,10 +51,10 @@ const Home = ()=>{
         </div>
 
         <div className="space-x-4">
-          <button className="bg-gray-300 py-2 px-5 rounded-md hover:bg-white hover:duration-300">
+          <button onClick={()=>{navigate('/SignIn')}} className="bg-gray-300 py-2 px-5 rounded-md hover:bg-white hover:duration-300">
             Sign in
           </button>
-          <button className="text-gray-300 border rounded-md py-2 px-5 hover:bg-white hover:text-black hover:duration-300">
+          <button onClick={()=>{navigate('/SignUp')}} className="text-gray-300 border rounded-md py-2 px-5 hover:bg-white hover:text-black hover:duration-300">
             Sign Up
           </button>
         </div>

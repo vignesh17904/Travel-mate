@@ -5,7 +5,7 @@ import "swiper/css/pagination";
 import 'swiper/css/navigation';
 import { Pagination,Navigation } from "swiper/modules";
 import { Link } from 'react-router-dom';
-// 🔽 Sample data — swap with your API later
+
 const places = [
   {
     id: 1,
@@ -64,7 +64,7 @@ const TravelCard = ({ image, name, description }) => (
 
 export default function Cards() {
   return (
-    <section className="max-w-5xl mx-auto px-4 py-10">
+    <section className="max-w-full mx-auto px-4 py-10 bg-gradient-to-br from-blue-100 to-white rounded-lg shadow-lg">
       <Swiper
         slidesPerView={1}
         spaceBetween={20}
@@ -72,7 +72,7 @@ export default function Cards() {
         modules={[Navigation]}
         breakpoints={{
           640: {
-            slidesPerView: 2, // 2 cards on screens >= 640px
+            slidesPerView: 3, // 2 cards on screens >= 640px
           },
         }}
         className="relative"

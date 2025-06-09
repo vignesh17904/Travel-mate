@@ -6,6 +6,8 @@ import TouristSpots from "./pages/City/TouristSpots.jsx";
 import Hotels from "./pages/City/Hotels.jsx";
 import Sample1 from "./pages/City/Sample1.jsx";
 import Sample2 from "./pages/City/Sample2.jsx";
+import SignIn from "./pages/SignIn.jsx";
+import SignUp from "./pages/SignUp.jsx";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +36,14 @@ const router = createBrowserRouter([
       }
     ],
   },
+  {
+    path:"/SignIn",
+    element:<SignIn/>
+  },
+  {
+    path:"/SignUp",
+    element:<SignUp/>
+  }
 ]);
 
 export default router;

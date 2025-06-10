@@ -33,6 +33,11 @@ const userSchema = new Schema(
     refreshtoken: {
       type: String,
     },
+    role: {
+    type: String,
+    enum: ["user", "hotelowner"],
+    default: "user"
+  },
   },
   { timestamps: true }
 );
@@ -59,4 +64,4 @@ userSchema.methods.generateRefreshToken = function () {
   );
 };
 
-export default mongoose.model('User', userSchema);
+export const User =  mongoose.model('User', userSchema);

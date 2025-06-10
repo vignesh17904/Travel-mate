@@ -1,19 +1,20 @@
-import { apiresponse } from "../utils/ApiResponse.js";
+//import { apiresponse } from "../utils/ApiResponse.js";
 import { fetchphoto } from "../utils/fetchphoto.js";
-import { apierror } from "../utils/ApiError.js";
-import { asynchandler } from "../utils/asyncHandler.js";
+import { ApiError } from "../utils/ApiError.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
 import { geminiresponse } from "../utils/geminiresponse.js";
 import axios from "axios";
 const touristCache = new Map();
-const gettouristplaces = asynchandler(async (req, res) => {
+const gettouristplaces = asyncHandler(async (req, res) => {
   const { placeid } = req.params;
   if (!placeid) {
-    throw new apierror(400, "Place ID is required");
+    throw new ApiError(400, "Place ID is required");
   }
   if (touristCache.has(placeid)) {
     console.log("Cache hit for place ID:", placeid);
     return res.status(200).json(
-      new apiresponse(200, { touritems: touristCache.get(placeid) }, "Tourist places fetched from cache")
+      new ApiResponse(200, { touritems: touristCache.get(placeid) }, "Tourist places fetched from cache")
     );
   }
   const config = {

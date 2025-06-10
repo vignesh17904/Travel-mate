@@ -1,7 +1,7 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import {ApiError} from "../utils/ApiError.js"
 import { User} from "../models/user.model.js";
-import {uploadOnCloudinary} from "../utils/cloudinary.js"
+//
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken"
 import mongoose from "mongoose";
@@ -27,10 +27,14 @@ catch(error){
 
 }
 const signUp = asyncHandler(async (req, res) => {
-  const { email, username, password } = req.body;
+  const { email, username, password, role } = req.body;
 
-  if ([email, username, password].some(field => field?.trim() === "")) {
+  if ([email, username, password, role].some(field => field?.trim() === "")) {
     throw new ApiError(400, "All fields are required");
+  }
+
+  if (!["user", "hotelowner"].includes(role)) {
+    throw new ApiError(400, "Invalid role selected");
   }
 
   const existedUser = await User.findOne({
@@ -38,13 +42,14 @@ const signUp = asyncHandler(async (req, res) => {
   });
 
   if (existedUser) {
-    throw new ApiError(409, "User with email or username already exist");
+    throw new ApiError(409, "User with email or username already exists");
   }
 
   const createdUser = await User.create({
     username,
     email,
     password,
+    role,
   });
 
   if (!createdUser) {
@@ -55,10 +60,7 @@ const signUp = asyncHandler(async (req, res) => {
 
   const loggedInUser = await User.findById(createdUser._id).select("-password -refreshToken");
 
-  const options = {
-    httpOnly: true,
-    secure: true,
-  };
+  const options = { httpOnly: true, secure: true };
 
   return res
     .status(201)
@@ -70,18 +72,18 @@ const signUp = asyncHandler(async (req, res) => {
 });
 
 const gsignUp = asyncHandler(async (req, res) => {
-  const { code } = req.body;
+  const { code, role = "user" } = req.body;
 
   if (!code) {
     throw new ApiError(400, "Authorization code is required");
   }
 
-  const tokenRes = await axios.post('https://oauth2.googleapis.com/token', {
+  const tokenRes = await axios.post("https://oauth2.googleapis.com/token", {
     code,
     client_id: process.env.GOOGLE_CLIENT_ID,
     client_secret: process.env.GOOGLE_CLIENT_SECRET,
-    redirect_uri: 'postmessage',
-    grant_type: 'authorization_code'
+    redirect_uri: "postmessage",
+    grant_type: "authorization_code",
   });
 
   const { access_token } = tokenRes.data;
@@ -90,8 +92,8 @@ const gsignUp = asyncHandler(async (req, res) => {
     throw new ApiError(401, "Failed to get access token from Google");
   }
 
-  const googleUserRes = await axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {
-    headers: { Authorization: `Bearer ${access_token}` }
+  const googleUserRes = await axios.get("https://www.googleapis.com/oauth2/v3/userinfo", {
+    headers: { Authorization: `Bearer ${access_token}` },
   });
 
   const { email, name, picture } = googleUserRes.data;
@@ -103,7 +105,7 @@ const gsignUp = asyncHandler(async (req, res) => {
   let user = await User.findOne({ email });
 
   if (!user) {
-    const username = email.split('@')[0];
+    const username = email.split("@")[0];
 
     user = await User.create({
       email,
@@ -111,7 +113,8 @@ const gsignUp = asyncHandler(async (req, res) => {
       fullName: name,
       avatar: picture,
       password: null,
-      isGoogleUser: true
+      
+      role,
     });
 
     if (!user) {

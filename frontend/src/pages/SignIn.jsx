@@ -1,10 +1,44 @@
-import React from "react";
+import React, { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
+import { useGoogleLogin } from "@react-oauth/google";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function SignIn() {
-  const handleGoogleSignIn = () => {
-    // Trigger your Google OAuth flow here
-    console.log("Google Sign-In clicked");
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleGoogleSignIn = useGoogleLogin({
+    flow: "auth-code",
+    onSuccess: async ({ code }) => {
+      try {
+        await axios.post("/glogin", { code }, { withCredentials: true });
+        navigate("/");
+      } catch (err) {
+        console.error(err.response?.data || err.message);
+      }
+    },
+    onError: (error) => {
+      console.error(error);
+    },
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post("/login", formData, { withCredentials: true });
+      navigate("/");
+    } catch (err) {
+      console.error(err.response?.data || err.message);
+    }
   };
 
   return (
@@ -13,48 +47,38 @@ export default function SignIn() {
         <h2 className="text-2xl font-bold text-center mb-6 text-blue-700">
           Sign In to TravelMate
         </h2>
-        <form className="space-y-4">
-          <div>
-            <label className="block mb-1 text-sm font-semibold text-gray-700">Full Name</label>
-            <input
-              type="text"
-              placeholder="Enter your name"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-          <div>
-            <label className="block mb-1 text-sm font-semibold text-gray-700">Email</label>
-            <input
-              type="email"
-              placeholder="example@mail.com"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-          <div>
-            <label className="block mb-1 text-sm font-semibold text-gray-700">Password</label>
-            <input
-              type="password"
-              placeholder="••••••••"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
+        <form className="space-y-4" onSubmit={handleSubmit}>
+          <input
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            type="email"
+            placeholder="example@mail.com"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+          />
+          <input
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            type="password"
+            placeholder="••••••••"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+          />
           <button
             type="submit"
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition duration-300"
+            className="w-full bg-blue-600 text-white py-2 rounded-lg"
           >
             Sign In
           </button>
         </form>
-
         <div className="mt-6 flex items-center justify-between">
           <hr className="flex-grow border-t border-gray-300" />
           <span className="mx-3 text-gray-500 text-sm">OR</span>
           <hr className="flex-grow border-t border-gray-300" />
         </div>
-
         <button
-          onClick={handleGoogleSignIn}
-          className="mt-4 w-full border border-gray-300 py-2 flex items-center justify-center rounded-lg hover:bg-gray-100 transition"
+          onClick={() => handleGoogleSignIn()}
+          className="mt-4 w-full border border-gray-300 py-2 flex items-center justify-center rounded-lg hover:bg-gray-100"
         >
           <FcGoogle className="mr-2 text-xl" />
           Sign in with Google

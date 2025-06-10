@@ -1,20 +1,20 @@
-import { apiresponse } from '../utils/ApiResponse.js';
-import { apierror } from './../utils/ApiError.js';
-import { asynchandler } from './../utils/asyncHandler.js';
+import { ApiResponse } from '../utils/ApiResponse.js';
+import { ApiError } from './../utils/ApiError.js';
+import { asyncHandler } from './../utils/asyncHandler.js';
 import  axios  from 'axios';
 import { fetchphoto } from '../utils/fetchphoto.js';
 import { geminiresponse } from '../utils/geminiresponse.js';
 
 const hotelcache = new Map()
-const gethotelsbyapi = asynchandler(async (req, res) => {
+const gethotelsbyapi = asyncHandler(async (req, res) => {
   const { placeid } = req.params;
   if (!placeid) {
-    throw new apierror(400, "Place ID is required");
+    throw new ApiError(400, "Place ID is required");
   }
   if (hotelcache.has(placeid)) {
     console.log("Cache hit for place ID:", placeid);
     return res.status(200).json(
-      new apiresponse(200, { hotelitems: hotelcache.get(placeid) }, "Hotels fetched from cache")
+      new ApiResponse(200, { hotelitems: hotelcache.get(placeid) }, "Hotels fetched from cache")
     );
   }
   const config = {
@@ -27,7 +27,7 @@ const gethotelsbyapi = asynchandler(async (req, res) => {
     const hotels = responsefromgeoapify.data.features;
     console.log("hotels", hotels);
     if (hotels.length === 0) {
-      throw new apierror(404, "No hotels found for this place");
+      throw new ApiError(404, "No hotels found for this place");
     }
     const hotelitems = await Promise.all(
       hotels
@@ -49,10 +49,10 @@ const gethotelsbyapi = asynchandler(async (req, res) => {
     hotelcache.set(placeid, hotelitems);
     res.
     status(200).json(
-    new apiresponse(200, {hotelitems}, "Hotels fetched successfully")
+    new ApiResponse(200, {hotelitems}, "Hotels fetched successfully")
   );
   } catch (error) {
-    throw new apierror(400, "Error fetching Hotels from Geoapify");
+    throw new ApiError(400, "Error fetching Hotels from Geoapify");
   }
   
 });

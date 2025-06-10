@@ -21,4 +21,8 @@ app.use('/api/tourist', touristrouter);
 
 import hotelrouter from './routes/hotels.routes.js';
 app.use('/api/hotels', hotelrouter);
+
+
+import userRouter from './routes/user.routes.js';
+app.use("/api/v1/users",userRouter)
 export {app};

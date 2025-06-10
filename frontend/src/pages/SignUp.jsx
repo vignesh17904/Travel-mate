@@ -1,10 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
+import { useGoogleLogin } from '@react-oauth/google';
 
 export default function SignUp() {
-  const handleGoogleSignUp = () => {
-    // Trigger your Google OAuth signup flow here
-    console.log("Google Sign-Up clicked");
+  const [role, setRole] = useState("user"); 
+
+  const handleGoogleSignUp = useGoogleLogin({
+  flow: 'auth-code',
+
+  onSuccess: async (codeResponse) => {
+    try {
+      const { code } = codeResponse;
+      console.log("Google login code:", code);
+      const res = await axios.post(
+        "/api/v1/users/gsignup", 
+        { code },
+        { withCredentials: true } 
+      );
+
+      console.log("Login successful:", res.data);
+
+    
+    } catch (err) {
+      console.error("Google login failed:", err.response?.data || err.message);
+    }
+  },
+
+  onError: (errorResponse) => {
+    console.error("Google Login Error:", errorResponse);
+  },
+})
+
+  const handleRoleChange = (e) => {
+    setRole(e.target.value);
   };
 
   return (
@@ -46,6 +74,20 @@ export default function SignUp() {
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
+
+          {/* 🔽 Role Dropdown */}
+          <div>
+            <label className="block mb-1 text-sm font-semibold text-gray-700">Select Role</label>
+            <select
+              value={role}
+              onChange={handleRoleChange}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="user">User</option>
+              <option value="owner">Hotel Owner</option>
+            </select>
+          </div>
+
           <button
             type="submit"
             className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition duration-300"
@@ -71,3 +113,4 @@ export default function SignUp() {
     </div>
   );
 }
+

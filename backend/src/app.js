@@ -21,4 +21,11 @@ app.use('/api/tourist', touristrouter);
 
 import hotelrouter from './routes/hotels.routes.js';
 app.use('/api/hotels', hotelrouter);
+<<<<<<< HEAD
+=======
+
+
+import userRouter from './routes/user.routes.js';
+app.use("/api/v1/users",userRouter)
+>>>>>>> 63e2c67b1db9c86c85dc62ef2ccd928a9c259a76
 export {app};

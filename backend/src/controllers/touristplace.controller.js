@@ -1,7 +1,14 @@
+<<<<<<< HEAD
 import { apiresponse } from "../utils/apiresponse.js";
 import { fetchphoto } from "../utils/fetchphoto.js";
 import { apierror } from "../utils/apierror.js";
 import { asynchandler } from "../utils/asynchandler.js";
+=======
+import { apiresponse } from "../utils/ApiResponse.js";
+import { fetchphoto } from "../utils/fetchphoto.js";
+import { apierror } from "../utils/ApiError.js";
+import { asynchandler } from "../utils/asyncHandler.js";
+>>>>>>> 63e2c67b1db9c86c85dc62ef2ccd928a9c259a76
 import { geminiresponse } from "../utils/geminiresponse.js";
 import axios from "axios";
 const touristCache = new Map();
@@ -42,7 +49,11 @@ const gettouristplaces = asynchandler(async (req, res) => {
         )
     );
     console.log(touritems)
+<<<<<<< HEAD
     // Store the fetched tourist places in the cache
+=======
+
+>>>>>>> 63e2c67b1db9c86c85dc62ef2ccd928a9c259a76
     touristCache.set(placeid, touritems);
     res.
     status(200).json(

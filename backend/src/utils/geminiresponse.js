@@ -21,8 +21,11 @@ export const geminiresponse = async (obj) => {
     } 
   };
 
+<<<<<<< HEAD
 // const sampleresponse = await geminiresponse({
 //   placename: "Eiffel Tower",
 //   question: "What is this place about?",
 // });
 // console.log("Sample response:", sampleresponse);
+=======
+>>>>>>> 63e2c67b1db9c86c85dc62ef2ccd928a9c259a76

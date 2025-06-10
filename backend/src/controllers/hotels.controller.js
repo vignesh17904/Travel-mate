@@ -1,12 +1,22 @@
+<<<<<<< HEAD
 import { apiresponse } from '../utils/apiresponse.js';
 import { apierror } from './../utils/apierror.js';
 import { asynchandler } from './../utils/asynchandler.js';
+=======
+import { apiresponse } from '../utils/ApiResponse.js';
+import { apierror } from './../utils/ApiError.js';
+import { asynchandler } from './../utils/asyncHandler.js';
+>>>>>>> 63e2c67b1db9c86c85dc62ef2ccd928a9c259a76
 import  axios  from 'axios';
 import { fetchphoto } from '../utils/fetchphoto.js';
 import { geminiresponse } from '../utils/geminiresponse.js';
 
 const hotelcache = new Map()
+<<<<<<< HEAD
 const gethotels = asynchandler(async (req, res) => {
+=======
+const gethotelsbyapi = asynchandler(async (req, res) => {
+>>>>>>> 63e2c67b1db9c86c85dc62ef2ccd928a9c259a76
   const { placeid } = req.params;
   if (!placeid) {
     throw new apierror(400, "Place ID is required");
@@ -57,4 +67,8 @@ const gethotels = asynchandler(async (req, res) => {
   
 });
 
+<<<<<<< HEAD
 export { gethotels };
+=======
+export { gethotelsbyapi };
+>>>>>>> 63e2c67b1db9c86c85dc62ef2ccd928a9c259a76

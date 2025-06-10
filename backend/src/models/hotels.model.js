@@ -9,13 +9,9 @@ const hotelSchema = new Schema({
         type: String,
         required: true,
     },
-    lat: {
-        type: Number,
-        required: true,
-    },
-    lon: {
-        type: Number,
-        required: true,
+    location: {
+      lat: { type: Number, required: true },
+      lon: { type: Number, required: true },
     },
     address: {
         type: String,
@@ -29,6 +25,10 @@ const hotelSchema = new Schema({
         type: Number,
         required: true,
     },
+    place:{
+        type : String,
+        required:true
+    }
 }, { timestamps: true });
 const Hotel = mongoose.model("Hotel", hotelSchema);
 export default Hotel;

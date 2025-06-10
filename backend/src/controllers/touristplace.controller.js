@@ -1,26 +1,19 @@
-<<<<<<< HEAD
-import { apiresponse } from "../utils/apiresponse.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
 import { fetchphoto } from "../utils/fetchphoto.js";
-import { apierror } from "../utils/apierror.js";
+import { ApiError } from "../utils/ApiError.js";
 import { asynchandler } from "../utils/asynchandler.js";
-=======
-import { apiresponse } from "../utils/ApiResponse.js";
-import { fetchphoto } from "../utils/fetchphoto.js";
-import { apierror } from "../utils/ApiError.js";
-import { asynchandler } from "../utils/asyncHandler.js";
->>>>>>> 63e2c67b1db9c86c85dc62ef2ccd928a9c259a76
 import { geminiresponse } from "../utils/geminiresponse.js";
 import axios from "axios";
 const touristCache = new Map();
 const gettouristplaces = asynchandler(async (req, res) => {
   const { placeid } = req.params;
   if (!placeid) {
-    throw new apierror(400, "Place ID is required");
+    throw new ApiError(400, "Place ID is required");
   }
   if (touristCache.has(placeid)) {
     console.log("Cache hit for place ID:", placeid);
     return res.status(200).json(
-      new apiresponse(200, { touritems: touristCache.get(placeid) }, "Tourist places fetched from cache")
+      new ApiResponse(200, { touritems: touristCache.get(placeid) }, "Tourist places fetched from cache")
     );
   }
   const config = {
@@ -32,7 +25,7 @@ const gettouristplaces = asynchandler(async (req, res) => {
     const responsefromgeoapify = await axios(config);
     const tour = responsefromgeoapify.data.features;
     if (tour.length === 0) {
-      throw new apierror(404, "No hotels found for this place");
+      throw new ApiError(404, "No hotels found for this place");
     }
     const touritems = await Promise.all(
       tour
@@ -49,18 +42,13 @@ const gettouristplaces = asynchandler(async (req, res) => {
         )
     );
     console.log(touritems)
-<<<<<<< HEAD
-    // Store the fetched tourist places in the cache
-=======
-
->>>>>>> 63e2c67b1db9c86c85dc62ef2ccd928a9c259a76
     touristCache.set(placeid, touritems);
     res.
     status(200).json(
-    new apiresponse(200, {touritems}, "Tourist places fetched successfully")
+    new ApiResponse(200, {touritems}, "Tourist places fetched successfully")
   );
   } catch (error) {
-    throw new apierror(400, "Error fetching tourist places from Geoapify");
+    throw new ApiError(400, "Error fetching tourist places from Geoapify");
   }
   
 });

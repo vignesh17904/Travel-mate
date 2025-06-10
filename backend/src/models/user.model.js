@@ -1,43 +1,3 @@
-<<<<<<< HEAD
-import { mongoose } from 'mongoose';
-import { Schema } from 'mongoose';
-import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
-const userschema = new Schema({
-    username:{
-        type: String,
-        required: true,
-        unique: true,
-        lowercase: true,
-        trim: true,
-        index: true,
-    },
-    email: {
-        type: String,
-        required: true,
-        unique: true,
-        match: /.+\@.+\..+/,
-        lowercase: true,
-    },
-    avatar: {
-        type: String,
-        required: true,
-        default: 'tourist/backend/public/user-profile-icon-placeholder.jpg',
-    },
-    password: {
-        type: String,
-    },
-    refreshtoken: {
-        type: String,
-    },
-} , { timestamps: true });
-
-
-
-
-
-export default mongoose.model('User', userschema);
-=======
 import mongoose, { Schema } from 'mongoose';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
@@ -99,5 +59,8 @@ userSchema.methods.generateRefreshToken = function () {
   );
 };
 
+userSchema.methods.comparePassword = async function (password) {
+  return await bcrypt.compare(password, this.password);
+};
+
 export default mongoose.model('User', userSchema);
->>>>>>> 63e2c67b1db9c86c85dc62ef2ccd928a9c259a76

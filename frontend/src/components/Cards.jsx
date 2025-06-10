@@ -8,43 +8,44 @@ import { Link } from 'react-router-dom';
 
 const places = [
   {
-    id: 1,
-    name: "Bali",
+    placeid: "51e54526e0d710564059563f8056aa093b40f00103f90110d950cb00000000c002079203093733343130312b696e" ,
+    name: "Darjeeling",
     image:
-      "https://images.unsplash.com/photo-1528569937393-e336d9a4166a?auto=format&fit=crop&w=800&q=60",
+      "https://images.unsplash.com/photo-1622308644420-b20142dc993c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     description:
-      "A tropical paradise with forested volcanic mountains, iconic rice terraces, beaches and vibrant coral reefs.",
+      "Darjeeling is renowned for its stunning landscapes, world-class tea, and rich cultural heritage, earning it the title of 'Queen of the Hills'",
   },
   {
-    id: 2,
-    name: "Paris",
+    placeid: "5127f33405579e5340591f4c8a8f4f5c3140f00101f9017710780000000000c00208",
+    name: "Hyderabad",
     image:
-      "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=800&q=60",
+      "https://images.unsplash.com/photo-1570795876989-bcec725b8e72?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     description:
-      "The City of Light, famed for its café culture, fashion, exquisite cuisine and the iconic Eiffel Tower.",
+      "Hyderabad is renowned for its rich history, iconic landmarks like Charminar and Golconda Fort, and its diverse culinary scene, particularly its Hyderabadi biryani.",
   },
   {
-    id: 3,
-    name: "Tokyo",
+    placeid: "51d87d6c3766ba514059b685e7a562e93a40f00103f901c6dbb31500000000c002079203093334353030312b696e",
+    name: "Jaisalmer",
     image:
-      "https://images.unsplash.com/photo-1508807954782-2e66eb760b49?auto=format&fit=crop&w=800&q=60",
+      "https://plus.unsplash.com/premium_photo-1661963200491-c9e52f12de89?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     description:
-      "A pulsating metropolis where ancient temples coexist with cutting‑edge technology and neon nightlife.",
+      "Jaisalmer is a former medieval trading center and a princely state in the western Indian state of Rajasthan, in the heart of the Thar Desert. Known as the 'Golden City'",
   },
   {
-    id: 4,
-    name: "Santorini",
+    placeid: "515a1eb5d3a0805340598972b389dd2c3b40f00103f90167d2cf2100000000c00208" ,
+    name: "Agra",
     image:
-      "https://images.unsplash.com/photo-1489512485771-accbcc58026d?auto=format&fit=crop&w=800&q=60",
+      "https://plus.unsplash.com/premium_photo-1661902184762-49c2c8ebb787?q=80&w=2016&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     description:
-      "White‑washed cliff‑side villages, cobalt‑blue domes and world‑class sunsets over the Aegean Sea.",
+      "Agra is renowned for its rich history and cultural heritage,famously known for the Taj Mahal,  its Mughlai cuisine, and the sweet Petha, a traditional Indian dessert made from ash gourd",
   },
 ];
 
 
-const TravelCard = ({ image, name, description }) => (
+const TravelCard = ({ placeid,name,image,description }) => (
   <Link
   to={`/${encodeURIComponent(name.toLowerCase())}`}
+  state={{ placeid }}
   className="block bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
 >
   <img

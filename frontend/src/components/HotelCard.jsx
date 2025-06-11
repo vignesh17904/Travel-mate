@@ -1,24 +1,39 @@
 import { Link } from 'react-router-dom';
+import React from 'react'; 
 
 const HotelCard = ({ hotel }) => {
-  const { id, name, image, description } = hotel;
+  const { _id, name, imageUrl, description, address, pricePerNight } = hotel;
 
   return (
     <Link
       to={{
-        pathname: `/hotel/${id}`,  // or you can use name if needed
+        pathname: `/hotel/${_id}`,
       }}
-      state={{ hotelId: id }}
-      className="block bg-white rounded-xl shadow hover:shadow-lg transition-shadow duration-300 overflow-hidden"
+      state={{ hotelId: _id }}
+      className="block bg-white rounded-xl shadow hover:shadow-lg transition-shadow duration-300 overflow-hidden justify-between"
     >
       <img
-        src={image}
+        src={imageUrl}
         alt={name}
         className="w-full h-48 object-cover object-center"
       />
-      <div className="p-4">
+      <div className="p-4 flex flex-col justify-between h-70">
         <h2 className="text-xl font-bold text-gray-800 mb-2">{name}</h2>
-        <p className="text-gray-600 text-sm md:text-base">{description}</p>
+        <p className="text-gray-600 text-sm md:text-base mb-2">{description}</p>
+
+        {/* Add Address */}
+        {/* {address && ( 
+          <p className="text-gray-700 text-sm mb-2">
+            <strong>Address:</strong> {address}
+          </p>
+        )} */}
+
+        {/* Add Price Per Night */}
+        {pricePerNight && ( 
+          <p className="text-green-700 text-lg font-semibold">
+            ₹{pricePerNight} / night
+          </p>
+        )}
       </div>
     </Link>
   );

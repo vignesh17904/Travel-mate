@@ -1,11 +1,12 @@
-import { ApiResponse } from "../utils/ApiResponse.js";
+//import { apiresponse } from "../utils/ApiResponse.js";
 import { fetchphoto } from "../utils/fetchphoto.js";
 import { ApiError } from "../utils/ApiError.js";
-import { asynchandler } from "../utils/asynchandler.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
 import { geminiresponse } from "../utils/geminiresponse.js";
 import axios from "axios";
 const touristCache = new Map();
-const gettouristplaces = asynchandler(async (req, res) => {
+const gettouristplaces = asyncHandler(async (req, res) => {
   const { placeid } = req.params;
   if (!placeid) {
     throw new ApiError(400, "Place ID is required");

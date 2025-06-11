@@ -33,21 +33,31 @@ const userSchema = new Schema(
     refreshtoken: {
       type: String,
     },
+    role: {
+    type: String,
+    enum: ["user", "hotelowner"],
+    default: "user"
   },
+  isGoogleUser: {
+      type: Boolean,
+      default: false,
+    
+  }},
   { timestamps: true }
+
 );
 
 userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) return next();
+  if (!this.isModified("password") ||this.isGoogleUser) return next();
   this.password = await bcrypt.hash(this.password, 10);
   next();
 });
 
 userSchema.methods.generateAccessToken = function () {
   return jwt.sign(
-    { id: this._id, email: this.email, username: this.username },
+    { _id: this._id, email: this.email, username: this.username },
     process.env.ACCESS_TOKEN_SECRET,
-    { expiresIn: '15m' }
+    { expiresIn: process.env.ACCESS_TOKEN_EXPIRY }
   );
 };
 
@@ -58,9 +68,8 @@ userSchema.methods.generateRefreshToken = function () {
     { expiresIn: '7d' }
   );
 };
-
-userSchema.methods.comparePassword = async function (password) {
-  return await bcrypt.compare(password, this.password);
+userSchema.methods.comparePassword = async function (enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.password);
 };
 
-export default mongoose.model('User', userSchema);
+export const User =  mongoose.model('User', userSchema);

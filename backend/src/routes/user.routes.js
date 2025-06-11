@@ -4,8 +4,9 @@ import { signUp,gsignUp,logoutUser,getUser,login,glogin,} from "../controllers/u
 const router = Router();
 router.route("/signup").post(signUp);
 router.route("/gsignup").post(gsignUp);
-router.post('/login',verifyjwt, login);
-router.post('/glogin',verifyjwt, glogin);
+router.post('/login', login);
+router.post('/glogin', glogin);
 router.post('/logout',verifyjwt,logoutUser);
 router.get('/getuser', verifyjwt, getUser);
+router.get('/me', verifyjwt, getUser);
 export default router;

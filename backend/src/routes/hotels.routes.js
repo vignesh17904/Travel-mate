@@ -1,7 +1,8 @@
 import { Router } from "express";
 
 import {
-    gethotelsbyapi,addHotels
+    gethotelsbyapi,addHotels,
+    gethotelsfromdb
 } from "../controllers/hotels.controller.js";
 
 
@@ -13,5 +14,9 @@ router.route("/:placeid").get(
 
 router.route("/add-hotel").post(
     addHotels
+)
+
+router.route("/db/:placeid").get(
+    gethotelsfromdb
 )
 export default router;

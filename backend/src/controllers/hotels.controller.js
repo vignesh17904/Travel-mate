@@ -1,19 +1,18 @@
-import { ApiResponse } from "../utils/ApiResponse.js";
-import { ApiError } from "../utils/ApiError.js";
-import { asynchandler } from "./../utils/asynchandler.js";
-import axios from "axios";
-import { fetchphoto } from "../utils/fetchphoto.js";
-import { geminiresponse } from "../utils/geminiresponse.js";
-import Hotel from "../models/hotels.model.js";
+import { ApiResponse } from '../utils/ApiResponse.js';
+import { ApiError } from './../utils/ApiError.js';
+import { asyncHandler } from './../utils/asyncHandler.js';
+import  axios  from 'axios';
+import { fetchphoto } from '../utils/fetchphoto.js';
+import { geminiresponse } from '../utils/geminiresponse.js';
+import Hotel from '../models/hotels.model.js';
 
-const hotelcache = new Map();
-const gethotelsbyapi = asynchandler(async (req, res) => {
+const hotelcache = new Map()
+const gethotelsbyapi = asyncHandler(async (req, res) => {
   const { placeid } = req.params;
   if (!placeid) {
     throw new ApiError(400, "Place ID is required");
   }
   if (hotelcache.has(placeid)) {
-    console.log("Cache hit for place ID:", placeid);
     return res
       .status(200)
       .json(
@@ -32,7 +31,7 @@ const gethotelsbyapi = asynchandler(async (req, res) => {
   try {
     const responsefromgeoapify = await axios(config);
     const hotels = responsefromgeoapify.data.features;
-    console.log("hotels", hotels);
+    
     if (hotels.length === 0) {
       throw new ApiError(404, "No hotels found for this place");
     }
@@ -59,7 +58,7 @@ const gethotelsbyapi = asynchandler(async (req, res) => {
             })) || null,
         }))
     );
-    console.log(hotelitems);
+    
     hotelcache.set(placeid, hotelitems);
     res
       .status(200)
@@ -71,15 +70,8 @@ const gethotelsbyapi = asynchandler(async (req, res) => {
   }
 });
 
-const addHotels = asynchandler(async (req, res) => {
+const addHotels = asyncHandler(async (req, res) => {
   const { image, name, description, place, location, address, pricePerNight } = req.body;
-
-  // if(!req.user){
-  //   throw new ApiError(400,"Owner must login to create hotel");
-  // }
-  // if(req.user.role !== "Hotel owner"){
-  //   throw new ApiError(400,"Only owners should create hotel");
-  // }
   if (
     !image ||!name ||!description ||!place ||!location ||!address ||!pricePerNight
   ) {
@@ -106,4 +98,21 @@ const addHotels = asynchandler(async (req, res) => {
   );
 });
 
-export { gethotelsbyapi , addHotels};
+
+const gethotelsfromdb = asyncHandler(async (req, res) => {
+  const { placeid } = req.params;
+  if (!placeid) {
+    throw new ApiError(400, "Placeid is required");
+  }
+  const hotels = await Hotel.find({ place:placeid });
+  if (!hotels || hotels.length === 0) {
+    throw new ApiError(404, "No hotels found for this place");
+  }
+  return res.status(200).json(
+    new ApiResponse(200, { hotels }, "Hotels fetched successfully")
+  );
+}
+);
+
+
+export { gethotelsbyapi , addHotels ,gethotelsfromdb};

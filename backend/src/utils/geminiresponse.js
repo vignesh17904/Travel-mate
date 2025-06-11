@@ -10,8 +10,6 @@ export const geminiresponse = async (obj) => {
         contents:
           `You are a travel and accomodation expert. give answer about ${obj.placename} for the question "${obj.question}"in not more than ${obj.words} words` 
       });
-      console.log("response",response);
-      console.log("response text",  response.text);
       const output = response?.text || "No response.";
       return output.trim();
     } 

@@ -1,4 +1,4 @@
-import React, { useState,useContext } from "react";
+import React, { useState, useContext } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
@@ -25,7 +25,7 @@ export default function SignUp() {
           { code, role: formData.role },
           { withCredentials: true }
         );
-       // await fetchUser(); 
+        // await fetchUser(); 
         navigate("/");
       } catch (err) {
         console.error(err.response?.data || err.message);
@@ -108,7 +108,11 @@ export default function SignUp() {
             Sign Up
           </button>
         </form>
-
+        <div className="flex items-center justify-center my-3">
+          <hr className="flex-grow border-gray-300" />
+          <span className="mx-3 text-gray-500 font-semibold">OR</span>
+          <hr className="flex-grow border-gray-300" />
+        </div>
         <div className="mt-6">
           <select
             name="role"

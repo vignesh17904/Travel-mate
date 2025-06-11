@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
-import 'swiper/css/navigation';
-import { Pagination,Navigation } from "swiper/modules";
-import { Link } from 'react-router-dom';
+import "swiper/css/navigation";
+import { Navigation } from "swiper/modules";
+import { Link, useNavigate } from "react-router-dom";
+import UserContext from "../context/UserContext";
 
 const places = [
   {
@@ -41,45 +42,56 @@ const places = [
   },
 ];
 
+const TravelCard = ({ image, name, description, user, navigate }) => {
+  const handleClick = (e) => {
+    if (!user) {
+      e.preventDefault();
+      navigate("/SignIn");
+    }
+  };
 
-const TravelCard = ({ image, name, description }) => (
-  <Link
-  to={`/${encodeURIComponent(name.toLowerCase())}`}
-  className="block bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
->
-  <img
-    src={image}
-    alt={name}
-    className="w-full h-48 object-cover object-center md:h-56 lg:h-64"
-  />
-  <div className="p-4">
-    <h2 className="text-xl font-semibold mb-2 text-gray-800">{name}</h2>
-    <p className="text-gray-600 leading-relaxed text-sm md:text-base">
-      {description}
-    </p>
-  </div>
-</Link>
-);
-
+  return (
+    <Link
+      to={`/${encodeURIComponent(name.toLowerCase())}`}
+      onClick={handleClick}
+      className="block bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
+    >
+      <img
+        src={image}
+        alt={name}
+        className="w-full h-48 object-cover object-center md:h-56 lg:h-64"
+      />
+      <div className="p-4">
+        <h2 className="text-xl font-semibold mb-2 text-gray-800">{name}</h2>
+        <p className="text-gray-600 leading-relaxed text-sm md:text-base">
+          {description}
+        </p>
+      </div>
+    </Link>
+  );
+};
 
 export default function Cards() {
+  const { user } = useContext(UserContext);
+  const navigate = useNavigate();
+
   return (
     <section className="max-w-full mx-auto px-4 py-10 bg-gradient-to-br from-blue-100 to-white rounded-lg shadow-lg">
       <Swiper
         slidesPerView={1}
         spaceBetween={20}
-        navigation={true} // enable navigation arrows
+        navigation={true}
         modules={[Navigation]}
         breakpoints={{
           640: {
-            slidesPerView: 3, // 2 cards on screens >= 640px
+            slidesPerView: 3,
           },
         }}
         className="relative"
       >
         {places.map((place) => (
           <SwiperSlide key={place.id}>
-            <TravelCard {...place} />
+            <TravelCard {...place} user={user} navigate={navigate} />
           </SwiperSlide>
         ))}
       </Swiper>

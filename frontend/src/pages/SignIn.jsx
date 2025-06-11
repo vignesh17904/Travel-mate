@@ -1,8 +1,8 @@
-import React, { useState,useContext } from "react";
+import React, { useState, useContext } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import UserContext from "../context/UserContext.js";
 
 export default function SignIn() {
@@ -12,13 +12,13 @@ export default function SignIn() {
     email: "",
     password: "",
   });
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleGoogleSignIn = useGoogleLogin({
     flow: "auth-code",
     onSuccess: async ({ code }) => {
       try {
-        await axios.post("/glogin", { code }, { withCredentials: true });
-        //await fetchUser(); 
+        await axios.post("/api/v1/users/glogin", { code }, { withCredentials: true });
         navigate("/");
       } catch (err) {
         console.error(err.response?.data || err.message);
@@ -38,19 +38,24 @@ export default function SignIn() {
     e.preventDefault();
     try {
       await axios.post("/api/v1/users/login", formData, { withCredentials: true });
-      //await fetchUser();
       navigate("/");
     } catch (err) {
       console.error(err.response?.data || err.message);
+      setErrorMessage("Incorrect email or password");
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-100 to-white flex justify-center items-center">
+    <div className="min-h-screen bg-gradient-to-br from-blue-100 to-white flex flex-col justify-center items-center">
       <div className="bg-white shadow-xl rounded-2xl p-8 w-full max-w-md">
         <h2 className="text-2xl font-bold text-center mb-6 text-blue-700">
           Sign In to TravelMate
         </h2>
+
+        {errorMessage && (
+          <div className="text-red-600 text-sm text-center mb-4">{errorMessage}</div>
+        )}
+
         <form className="space-y-4" onSubmit={handleSubmit}>
           <input
             name="email"
@@ -75,11 +80,13 @@ export default function SignIn() {
             Sign In
           </button>
         </form>
+
         <div className="mt-6 flex items-center justify-between">
           <hr className="flex-grow border-t border-gray-300" />
           <span className="mx-3 text-gray-500 text-sm">OR</span>
           <hr className="flex-grow border-t border-gray-300" />
         </div>
+
         <button
           onClick={() => handleGoogleSignIn()}
           className="mt-4 w-full border border-gray-300 py-2 flex items-center justify-center rounded-lg hover:bg-gray-100"
@@ -88,6 +95,13 @@ export default function SignIn() {
           Sign in with Google
         </button>
       </div>
+
+      <p className="mt-4 text-sm text-gray-600">
+        New to TravelMate?{" "}
+        <Link to="/SignUp" className="text-blue-600 hover:underline">
+          Sign up
+        </Link>
+      </p>
     </div>
   );
 }

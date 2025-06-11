@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState,useContext } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import UserContext from "../context/UserContext.js";
 
 export default function SignIn() {
+  const { fetchUser } = useContext(UserContext);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
@@ -16,6 +18,7 @@ export default function SignIn() {
     onSuccess: async ({ code }) => {
       try {
         await axios.post("/glogin", { code }, { withCredentials: true });
+        //await fetchUser(); 
         navigate("/");
       } catch (err) {
         console.error(err.response?.data || err.message);
@@ -34,7 +37,8 @@ export default function SignIn() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("/login", formData, { withCredentials: true });
+      await axios.post("/api/v1/users/login", formData, { withCredentials: true });
+      //await fetchUser();
       navigate("/");
     } catch (err) {
       console.error(err.response?.data || err.message);

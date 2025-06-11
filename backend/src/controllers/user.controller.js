@@ -113,7 +113,7 @@ const gsignUp = asyncHandler(async (req, res) => {
       fullName: name,
       avatar: picture,
       password: null,
-      
+      isGoogleUser: true,
       role,
     });
 

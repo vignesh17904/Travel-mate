@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useState,useContext } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import UserContext from "../context/UserContext.js";
 
 export default function SignUp() {
+  const { fetchUser } = useContext(UserContext);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    name: "",
+    username: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -19,10 +21,11 @@ export default function SignUp() {
     onSuccess: async ({ code }) => {
       try {
         await axios.post(
-          "/gsignup",
+          "/api/v1/users/gsignup",
           { code, role: formData.role },
           { withCredentials: true }
         );
+       // await fetchUser(); 
         navigate("/");
       } catch (err) {
         console.error(err.response?.data || err.message);
@@ -41,8 +44,9 @@ export default function SignUp() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("/signup", formData, { withCredentials: true });
+      await axios.post("/api/v1/users/signup", formData, { withCredentials: true });
       navigate("/");
+      //await fetchUser();
     } catch (err) {
       console.error(err.response?.data || err.message);
     }
@@ -54,10 +58,11 @@ export default function SignUp() {
         <h2 className="text-2xl font-bold text-center mb-6 text-blue-700">
           Create Your Account
         </h2>
+
         <form className="space-y-4" onSubmit={handleSubmit}>
           <input
-            name="name"
-            value={formData.name}
+            name="username"
+            value={formData.username}
             onChange={handleChange}
             type="text"
             placeholder="Enter your name"
@@ -103,18 +108,25 @@ export default function SignUp() {
             Sign Up
           </button>
         </form>
-        <div className="mt-6 flex items-center justify-between">
-          <hr className="flex-grow border-t border-gray-300" />
-          <span className="mx-3 text-gray-500 text-sm">OR</span>
-          <hr className="flex-grow border-t border-gray-300" />
+
+        <div className="mt-6">
+          <select
+            name="role"
+            value={formData.role}
+            onChange={handleChange}
+            className="w-full mb-3 px-4 py-2 border border-gray-300 rounded-lg"
+          >
+            <option value="user">User</option>
+            <option value="hotelowner">Hotel Owner</option>
+          </select>
+          <button
+            onClick={() => handleGoogleSignUp()}
+            className="w-full border border-gray-300 py-2 flex items-center justify-center rounded-lg hover:bg-gray-100"
+          >
+            <FcGoogle className="mr-2 text-xl" />
+            Continue with Google
+          </button>
         </div>
-        <button
-          onClick={() => handleGoogleSignUp()}
-          className="mt-4 w-full border border-gray-300 py-2 flex items-center justify-center rounded-lg hover:bg-gray-100"
-        >
-          <FcGoogle className="mr-2 text-xl" />
-          Continue with Google
-        </button>
       </div>
     </div>
   );

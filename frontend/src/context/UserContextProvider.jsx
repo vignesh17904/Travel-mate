@@ -8,7 +8,7 @@ const UserContextProvider = ({ children }) => {
   const fetchUser = async () => {
     try {
       const res = await axios.get("/api/v1/users/me", { withCredentials: true });
-      setUser(res.data.user);
+      setUser(res.data.data);
     } catch (err) {
       setUser(null);
     }

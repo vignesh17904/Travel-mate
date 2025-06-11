@@ -38,8 +38,13 @@ const userSchema = new Schema(
     enum: ["user", "hotelowner"],
     default: "user"
   },
-  },
+  isGoogleUser: {
+      type: Boolean,
+      default: false,
+    
+  }},
   { timestamps: true }
+
 );
 
 userSchema.pre("save", async function (next) {
@@ -62,6 +67,9 @@ userSchema.methods.generateRefreshToken = function () {
     process.env.REFRESH_TOKEN_SECRET,
     { expiresIn: '7d' }
   );
+};
+userSchema.methods.comparePassword = async function (enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.password);
 };
 
 export const User =  mongoose.model('User', userSchema);

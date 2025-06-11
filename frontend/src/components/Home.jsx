@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
+import { useContext,useEffect } from "react";
 import UserContext from "../context/UserContext.js";
 
 import {
@@ -12,7 +12,10 @@ import {
 
 const Home = () => {
   const navigate = useNavigate();
-  const { user } = useContext(UserContext);
+  const { user,fetchUser } = useContext(UserContext);
+  useEffect(() => {
+  if (!user) fetchUser();
+}, []);
 
   return (
     <React.Fragment>

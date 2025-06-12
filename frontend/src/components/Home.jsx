@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import UserContext from "../context/UserContext.js";
 import axios from "axios";
-
+import AxiosInstance from "../utils/ApiConfig.js";
 import {
   AiFillFacebook,
   AiFillInstagram,
@@ -19,14 +19,14 @@ const Home = () => {
   }, []);
 
   const handleLogout = async () => {
-    try {
-      await axios.post("/api/v1/users/logout", {}, { withCredentials: true });
-      setUser(null);
-      navigate("/");
-    } catch (error) {
-      console.error("Logout failed", error);
-    }
-  };
+  try {
+    await AxiosInstance.post("v1/users/logout", {});
+    setUser(null);
+    navigate("/");
+  } catch (error) {
+    console.error("Logout failed", error);
+  }
+};
 
   return (
     <React.Fragment>

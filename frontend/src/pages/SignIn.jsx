@@ -4,7 +4,7 @@ import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import UserContext from "../context/UserContext.js";
-
+import AxiosInstance from "../utils/ApiConfig.js";
 export default function SignIn() {
   const { fetchUser } = useContext(UserContext);
   const navigate = useNavigate();
@@ -15,35 +15,35 @@ export default function SignIn() {
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleGoogleSignIn = useGoogleLogin({
-    flow: "auth-code",
-    onSuccess: async ({ code }) => {
-      try {
-        await axios.post("/api/v1/users/glogin", { code }, { withCredentials: true });
-        navigate("/");
-      } catch (err) {
-        console.error(err.response?.data || err.message);
-      }
-    },
-    onError: (error) => {
-      console.error(error);
-    },
-  });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  flow: "auth-code",
+  onSuccess: async ({ code }) => {
     try {
-      await axios.post("/api/v1/users/login", formData, { withCredentials: true });
+      await AxiosInstance.post("v1/users/glogin", { code });
       navigate("/");
     } catch (err) {
       console.error(err.response?.data || err.message);
-      setErrorMessage("Incorrect email or password");
     }
-  };
+  },
+  onError: (error) => {
+    console.error(error);
+  },
+});
+
+const handleChange = (e) => {
+  const { name, value } = e.target;
+  setFormData((prev) => ({ ...prev, [name]: value }));
+};
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    await AxiosInstance.post("v1/users/login", formData);
+    navigate("/");
+  } catch (err) {
+    console.error(err.response?.data || err.message);
+    setErrorMessage("Incorrect email or password");
+  }
+};
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-100 to-white flex flex-col justify-center items-center">

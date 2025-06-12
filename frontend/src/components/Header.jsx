@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
+  
+
 
 const user = {
   name: "Raja Vignesh",
@@ -14,7 +16,7 @@ export default function Header() {
     <header className="shadow sticky z-50 top-0 bg-white">
       <nav className="border-black-200 px-4 lg:px-6 py-2.5 max-w-screen-xl mx-auto flex items-center">
         
-        {/* Logo */}
+        
         <Link to="/" className="flex items-center flex-shrink-0">
           <img
             src="https://alexharkness.com/wp-content/uploads/2020/06/logo-2.png"
@@ -23,7 +25,7 @@ export default function Header() {
           />
         </Link>
 
-        {/* Nav links - flex-grow to take remaining space */}
+       
         <div className="flex-1">
           <ul className="flex justify-center space-x-8 font-medium">
             {[
@@ -33,7 +35,7 @@ export default function Header() {
               { to: 'Sample2', label: 'Sample2' },
             ].map(({ to, label, exact }) => (
               <li key={to}>
-                <NavLink
+<NavLink
                   to={to}
                   end={exact}
                   className={({ isActive }) =>
@@ -59,11 +61,11 @@ export default function Header() {
             />
           ) : (
             <div className="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center text-lg font-semibold">
-              {user.name.charAt(0).toUpperCase()}
+             {user.name.charAt(0).toUpperCase()}
             </div>
           )}
         </div>
       </nav>
     </header>
-  );
+  );
 }

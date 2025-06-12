@@ -4,7 +4,7 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import AxiosInstance from "@/utils/ApiConfig";
-import { GeminiResponse } from "@/utils/GeminiResponse.JS";
+import { GeminiResponse } from "@/utils/GeminiResponse.js";
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({

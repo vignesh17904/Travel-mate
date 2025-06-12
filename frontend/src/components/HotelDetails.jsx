@@ -6,7 +6,6 @@ import L from "leaflet";
 import AxiosInstance from "@/utils/ApiConfig";
 import { GeminiResponse } from "@/utils/GeminiResponse.JS";
 
-// Setup default marker icon
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png",
@@ -60,7 +59,7 @@ const HotelDetailPage = () => {
       const result = await GeminiResponse({
         placename: hotel.address,
         question,
-        words: "50",
+        words: "80",
       });
       setAnswer(result);
     } catch (error) {
@@ -75,7 +74,7 @@ const HotelDetailPage = () => {
 
   return (
     <div className="flex flex-col md:flex-row h-[calc(100vh-4rem)] bg-[#fff7ed] text-[#1e293b] font-sans overflow-hidden">
-      {/* Left Panel */}
+
       <div className="md:w-1/2 h-[50vh] md:h-full overflow-y-auto px-6 py-6 space-y-6 relative z-10 bg-white">
         <img
           src={hotel.imageUrl}
@@ -115,7 +114,6 @@ const HotelDetailPage = () => {
           </button>
         </div>
 
-        {/* Ask Question */}
         <div className="mt-6 space-y-3">
           <label className="block font-semibold">Ask something about this hotel</label>
           <input
@@ -140,8 +138,6 @@ const HotelDetailPage = () => {
           )}
         </div>
       </div>
-
-      {/* Right Panel (Map) */}
       <div className="md:w-1/2 h-[50vh] md:h-full relative">
         {mapLoading && (
           <div className="absolute inset-0 z-10 bg-[#f1f5f9] animate-pulse flex items-center justify-center text-[#94a3b8]">

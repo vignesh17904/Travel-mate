@@ -19,15 +19,6 @@ const HotelCard = ({ hotel,cityname }) => {
       <div className="p-4 flex flex-col justify-between h-70">
         <h2 className="text-xl font-bold text-gray-800 mb-2">{name}</h2>
         <p className="text-gray-600 text-sm md:text-base mb-2">{description}</p>
-
-        {/* Add Address */}
-        {/* {address && ( 
-          <p className="text-gray-700 text-sm mb-2">
-            <strong>Address:</strong> {address}
-          </p>
-        )} */}
-
-        {/* Add Price Per Night */}
         {pricePerNight && ( 
           <p className="text-green-700 text-lg font-semibold">
             ₹{pricePerNight} / night

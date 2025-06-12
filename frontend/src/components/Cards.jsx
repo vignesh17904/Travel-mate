@@ -8,7 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 import UserContext from "../context/UserContext";
 import AxiosInstance from "@/utils/ApiConfig.js";
 
-// 👇 TravelCard Component
+
 const TravelCard = ({ imageurl, name, description, placeid, user, navigate }) => {
   const handleClick = (e) => {
     if (!user) {

@@ -8,7 +8,7 @@ function Hotels() {
   const [hotels, setHotels] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  const {CityName} = useParams()
   useEffect(() => {
     if (placeid) {
       setLoading(true);
@@ -40,7 +40,7 @@ function Hotels() {
         ) : hotels.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {hotels.map((hotelitem) => (
-              <HotelCard key={hotelitem._id} hotel={hotelitem} />
+              <HotelCard key={hotelitem._id} hotel={hotelitem} cityname={CityName}/>
             ))}
           </div>
         ) : (

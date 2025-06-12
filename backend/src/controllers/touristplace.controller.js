@@ -12,7 +12,6 @@ const gettouristplaces = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Place ID is required");
   }
   if (touristCache.has(placeid)) {
-    console.log("Cache hit for place ID:", placeid);
     return res.status(200).json(
       new ApiResponse(200, { touritems: touristCache.get(placeid) }, "Tourist places fetched from cache")
     );
@@ -42,7 +41,6 @@ const gettouristplaces = asyncHandler(async (req, res) => {
             )
         )
     );
-    console.log(touritems)
     touristCache.set(placeid, touritems);
     res.
     status(200).json(

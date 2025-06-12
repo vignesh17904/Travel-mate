@@ -2,7 +2,9 @@ import { Router } from "express";
 
 import {
     gethotelsbyapi,addHotels,
-    gethotelsfromdb
+    gethotelsfromdb,
+    getnearestcafes,
+    getnearestpublictransport
 } from "../controllers/hotels.controller.js";
 
 
@@ -18,5 +20,13 @@ router.route("/add-hotel").post(
 
 router.route("/db/:placeid").get(
     gethotelsfromdb
+)
+
+router.route("/cafe/:lon/:lat").get(
+    getnearestcafes
+)
+
+router.route("/public-transport/:lon/:lat").get(
+    getnearestpublictransport
 )
 export default router;

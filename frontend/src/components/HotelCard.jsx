@@ -1,15 +1,14 @@
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import React from 'react'; 
 
-const HotelCard = ({ hotel }) => {
-  const { _id, name, imageUrl, description, address, pricePerNight } = hotel;
-
+const HotelCard = ({ hotel,cityname }) => {
+  const { _id, name, imageUrl, description, address, pricePerNight,location } = hotel;
   return (
     <Link
       to={{
-        pathname: `/hotel/${_id}`,
+        pathname: `/${cityname}/Hotels/${location.lon}/${location.lat}`,
       }}
-      state={{ hotelId: _id }}
+      state={{ hotel }}
       className="block bg-white rounded-xl shadow hover:shadow-lg transition-shadow duration-300 overflow-hidden justify-between"
     >
       <img

@@ -39,7 +39,6 @@ const getcities = asyncHandler(async (req, res) => {
 
 const getPlaceIdByCityName = asyncHandler(async (req, res) => {
   const { name } = req.params;
-  console.log(name);
   if (!name) {
     throw new ApiError(400, "City name is required");
   }

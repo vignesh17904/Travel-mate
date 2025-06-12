@@ -6,7 +6,7 @@ import AxiosInstance from "@/utils/ApiConfig.js";
 
 export default function CityLayout() {
   const { CityName } = useParams(); 
-  console.log("CityLayout CityName:", CityName);
+  // console.log("CityLayout CityName:", CityName);
 
   const [currentPlaceId, setCurrentPlaceId] = useState(null);
   

@@ -1,6 +1,6 @@
 // src/router.jsx
 import { createBrowserRouter } from "react-router-dom";
-import Landing from "./pages/Landing.jsx"; 
+import Landing from "./pages/Landing.jsx";
 import CityLayout from "./pages/City/CityLayout.jsx";
 import TouristSpots from "./pages/City/TouristSpots.jsx";
 import Hotels from "./pages/City/Hotels.jsx";
@@ -8,18 +8,19 @@ import Sample1 from "./pages/City/Sample1.jsx";
 import Sample2 from "./pages/City/Sample2.jsx";
 import SignIn from "./pages/SignIn.jsx";
 import SignUp from "./pages/SignUp.jsx";
+import HotelDetails from "./components/HotelDetails.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Landing />, 
+    element: <Landing />,
   },
   {
     path: "/:CityName",
     element: <CityLayout />,
     children: [
       {
-        index: true, 
+        index: true,
         element: <TouristSpots />,
       },
       {
@@ -27,23 +28,27 @@ const router = createBrowserRouter([
         element: <Hotels />,
       },
       {
+        path: "Hotels/:lon/:lat", 
+        element: <HotelDetails />,
+      },
+      {
         path: "Sample1",
         element: <Sample1 />,
       },
       {
-        path:"Sample2",
-        element:<Sample2/>
-      }
+        path: "Sample2",
+        element: <Sample2 />,
+      },
     ],
   },
   {
-    path:"/SignIn",
-    element:<SignIn/>
+    path: "/SignIn",
+    element: <SignIn />,
   },
   {
-    path:"/SignUp",
-    element:<SignUp/>
-  }
+    path: "/SignUp",
+    element: <SignUp />,
+  },
 ]);
 
 export default router;

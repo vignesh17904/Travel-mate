@@ -98,21 +98,127 @@ const addHotels = asyncHandler(async (req, res) => {
   );
 });
 
-
+const hotelcachedb = new Map()
 const gethotelsfromdb = asyncHandler(async (req, res) => {
   const { placeid } = req.params;
   if (!placeid) {
     throw new ApiError(400, "Placeid is required");
   }
+  if (hotelcachedb.has(placeid)) {
+    return res
+      .status(200)
+      .json(
+        new ApiResponse(
+          200,
+          { hotels: hotelcachedb.get(placeid) },
+          "Hotels fetched from cache"
+        )
+      );
+  }
   const hotels = await Hotel.find({ place:placeid });
   if (!hotels || hotels.length === 0) {
     throw new ApiError(404, "No hotels found for this place");
   }
+  hotelcachedb.set(placeid, hotels);
   return res.status(200).json(
     new ApiResponse(200, { hotels }, "Hotels fetched successfully")
   );
 }
 );
+const cafecache = new Map()
+const getnearestcafes = asyncHandler(async (req, res) => {
+  const { lat, lon } = req.params;
 
+  if (!lat || !lon) {
+    throw new ApiError(400, "Latitude and Longitude are required");
+  }
 
-export { gethotelsbyapi , addHotels ,gethotelsfromdb};
+  const radius = 5000; // in meters (5 km)
+  const apiKey = process.env.GEOAPIFY_API_KEY;
+  const cacheKey = `${lat}:${lon}`;
+  if (cafecache.has(cacheKey)) {
+    // console.log("Serving from cafe cache");
+    return res.status(200).json(
+      new ApiResponse(200,cafecache.get(cacheKey),"Nearest cafes fetched successfully from cache")
+      );
+  }
+  const url = `https://api.geoapify.com/v2/places?categories=catering.cafe&filter=circle:${lon},${lat},${radius}&bias=proximity:${lon},${lat}&limit=20&apiKey=${apiKey}`;
+
+  try {
+    const response = await axios.get(url);
+    const cafes = response.data.features;
+    const validCafes = cafes
+      .filter(
+        (cafe) =>
+          cafe.properties.name &&
+          cafe.properties.formatted &&
+          cafe.properties.distance&&
+          cafe.geometry?.coordinates?.length === 2
+      )
+      .map((cafe) => ({
+        name: cafe.properties.name,
+        address: cafe.properties.formatted,
+        distance:cafe.properties.distance,
+        lat: cafe.geometry.coordinates[1],
+        lon: cafe.geometry.coordinates[0],
+      }));
+      cafecache.set(cacheKey, validCafes);
+    return res
+      .status(200)
+      .json(new ApiResponse(200, validCafes, "Nearest cafes fetched successfully"));
+  } catch (error) {
+    console.error("Geoapify API error:", error?.response?.data || error.message);
+    throw new ApiError(500, "Failed to fetch nearest cafes");
+  }
+});
+
+const publiccache = new Map()
+const getnearestpublictransport = asyncHandler(async (req, res) => {
+  const { lat, lon } = req.params;
+
+  if (!lat || !lon) {
+    throw new ApiError(400, "Latitude and Longitude are required");
+  }
+
+  const radius = 5000; // in meters (5 km)
+  const apiKey = process.env.GEOAPIFY_API_KEY;
+  const cacheKey = `${lat}:${lon}`;
+  if (publiccache.has(cacheKey)) {
+    return res.status(200).json(
+      new ApiResponse(200,publiccache.get(cacheKey),"Nearest public transport stops fetched successfully from cache")
+      );
+  }
+  const url = `https://api.geoapify.com/v2/places?categories=public_transport.train,public_transport.bus,public_transport.subway&filter=circle:${lon},${lat},${radius}&bias=proximity:${lon},${lat}&limit=20&apiKey=${apiKey}`;
+
+  try {
+    const response = await axios.get(url);
+    const stops = response.data.features;
+    const validstops = stops
+      .filter(
+        (stop) =>
+          stop.properties.name &&
+          stop.properties.formatted &&
+          stop.properties.categories &&
+          stop.properties.distance &&
+          stop.geometry?.coordinates?.length === 2
+      )
+      .map((stop) => ({
+        name: stop.properties.name,
+        address: stop.properties.formatted,
+        distance:stop.properties.distance,
+        type:stop.properties.categories[1].split('.')[1],
+        categories:stop.properties.categories,
+        lat: stop.geometry.coordinates[1],
+        lon: stop.geometry.coordinates[0],
+      }));
+      publiccache.set(cacheKey, validstops);
+    return res
+      .status(200)
+      .json(new ApiResponse(200, validstops, "Nearest stops fetched successfully"));
+  } catch (error) {
+    console.error("Geoapify API error:", error?.response?.data || error.message);
+    throw new ApiError(500, "Failed to fetch nearest stops");
+  }
+});
+
+export { gethotelsbyapi , addHotels ,gethotelsfromdb ,getnearestcafes , getnearestpublictransport};

@@ -59,7 +59,7 @@ const HotelDetailPage = () => {
       const result = await GeminiResponse({
         placename: hotel.address,
         question,
-        words: "80",
+        words: "120",
       });
       setAnswer(result);
     } catch (error) {

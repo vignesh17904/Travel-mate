@@ -30,7 +30,6 @@ export default function CityLayout() {
     <div className="flex flex-col min-h-screen">
       <Header />
       
-      {/* Main content grows to fill available space */}
       <main className="flex-grow max-w-screen-xl mx-auto px-4 py-8 w-full">
         <Outlet context={{ placeid: currentPlaceId }}/>
       </main>

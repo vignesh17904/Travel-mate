@@ -20,7 +20,7 @@ export default function SignUp() {
   flow: "auth-code",
   onSuccess: async ({ code }) => {
     try {
-      await AxiosInstance.post("/v1/users/gsignup", {
+      await AxiosInstance.post("v1/users/gsignup", {
         code,
         role: formData.role,
       });
@@ -41,16 +41,11 @@ const handleChange = (e) => {
 
 const handleSubmit = async (e) => {
   e.preventDefault();
-  if(formData.password !== formData.confirmPassword){
-    alert("Password and confirm password should match");
-  }
-  else{
-    try {
-      await AxiosInstance.post("/v1/users/signup", formData);
-      navigate("/");
-    } catch (err) {
-      console.error(err.response?.data || err.message);
-    }
+  try {
+    await AxiosInstance.post("v1/users/signup", formData);
+    navigate("/");
+  } catch (err) {
+    console.error(err.response?.data || err.message);
   }
 };
 

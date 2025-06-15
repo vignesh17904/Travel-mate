@@ -20,7 +20,7 @@ export default function SignUp() {
   flow: "auth-code",
   onSuccess: async ({ code }) => {
     try {
-      await AxiosInstance.post("/users/gsignup", {
+      await AxiosInstance.post("v1/users/gsignup", {
         code,
         role: formData.role,
       });
@@ -42,7 +42,7 @@ const handleChange = (e) => {
 const handleSubmit = async (e) => {
   e.preventDefault();
   try {
-    await AxiosInstance.post("/users/signup", formData);
+    await AxiosInstance.post("v1/users/signup", formData);
     navigate("/");
   } catch (err) {
     console.error(err.response?.data || err.message);

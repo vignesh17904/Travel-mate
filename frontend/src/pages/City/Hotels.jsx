@@ -2,6 +2,7 @@ import HotelCard from "@/components/HotelCard.jsx";
 import AxiosInstance from "@/utils/ApiConfig.js";
 import React, { useEffect, useState } from "react";
 import { useLocation, useOutletContext, useParams } from "react-router-dom";
+import ChatbotLauncher from "../Chatbot/Chatbotlauncher.jsx";
 
 function Hotels() {
   const { placeid } = useOutletContext();
@@ -54,6 +55,9 @@ function Hotels() {
             Discover more about the city and its attractions.
           </p>
         </div>
+      </div>
+      <div>
+        <ChatbotLauncher hotels={hotels} />
       </div>
     </>
   );

@@ -28,6 +28,11 @@ const hotelSchema = new Schema({
     place:{
         type : String,
         required:true
+    },
+    owner:{
+        type:mongoose.Types.ObjectId,
+        ref: "User",
+        required:true
     }
 }, { timestamps: true });
 const Hotel = mongoose.model("Hotel", hotelSchema);

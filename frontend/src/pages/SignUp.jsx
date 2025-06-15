@@ -4,7 +4,7 @@ import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import UserContext from "../context/UserContext.js";
-
+import AxiosInstance from "../utils/ApiConfig.js";
 export default function SignUp() {
   const { fetchUser } = useContext(UserContext);
   const navigate = useNavigate();
@@ -16,41 +16,43 @@ export default function SignUp() {
     role: "user",
   });
 
-  const handleGoogleSignUp = useGoogleLogin({
-    flow: "auth-code",
-    onSuccess: async ({ code }) => {
-      try {
-        await axios.post(
-          "/api/v1/users/gsignup",
-          { code, role: formData.role },
-          { withCredentials: true }
-        );
-        // await fetchUser(); 
-        navigate("/");
-      } catch (err) {
-        console.error(err.response?.data || err.message);
-      }
-    },
-    onError: (error) => {
-      console.error(error);
-    },
-  });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+ const handleGoogleSignUp = useGoogleLogin({
+  flow: "auth-code",
+  onSuccess: async ({ code }) => {
     try {
-      await axios.post("/api/v1/users/signup", formData, { withCredentials: true });
+      await AxiosInstance.post("/v1/users/gsignup", {
+        code,
+        role: formData.role,
+      });
       navigate("/");
-      //await fetchUser();
     } catch (err) {
       console.error(err.response?.data || err.message);
     }
-  };
+  },
+  onError: (error) => {
+    console.error(error);
+  },
+});
+
+const handleChange = (e) => {
+  const { name, value } = e.target;
+  setFormData((prev) => ({ ...prev, [name]: value }));
+};
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  if(formData.password !== formData.confirmPassword){
+    alert("Password and confirm password should match");
+  }
+  else{
+    try {
+      await AxiosInstance.post("/v1/users/signup", formData);
+      navigate("/");
+    } catch (err) {
+      console.error(err.response?.data || err.message);
+    }
+  }
+};
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-100 to-white flex justify-center items-center">

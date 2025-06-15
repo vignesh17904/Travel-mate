@@ -1,5 +1,7 @@
 import { Router } from "express";
-
+import { uploadoncloudinary } from "../utils/Cloudinary.js";
+import { verifyjwt } from './../middleware/auth.middleware.js';
+import { upload } from './../middleware/multer.middleware.js';
 import {
     gethotelsbyapi,addHotels,
     gethotelsfromdb,
@@ -15,6 +17,8 @@ router.route("/:placeid").get(
 );
 
 router.route("/add-hotel").post(
+    verifyjwt,
+    upload.single("hotel-image"),
     addHotels
 )
 

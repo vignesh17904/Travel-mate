@@ -3,6 +3,7 @@ import React from 'react';
 
 const HotelCard = ({ hotel,cityname }) => {
   const { _id, name, imageUrl, description, address, pricePerNight,location } = hotel;
+  console.log("hotel in hotelcard",hotel);
   return (
     <Link
       to={{

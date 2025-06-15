@@ -9,6 +9,7 @@ import Sample2 from "./pages/City/Sample2.jsx";
 import SignIn from "./pages/SignIn.jsx";
 import SignUp from "./pages/SignUp.jsx";
 import HotelDetails from "./components/HotelDetails.jsx";
+import AddHotel from "./components/Addhotel.jsx";
 
 const router = createBrowserRouter([
   {
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
       {
         path: "Hotels/:lon/:lat", 
         element: <HotelDetails />,
+      },
+      {
+        path: "Hotels/add-hotel",
+        element: <AddHotel />,
       },
       {
         path: "Sample1",

@@ -27,7 +27,6 @@ const HotelDetailPage = () => {
   const [latt, setLat] = useState(Number(lat));
   const [lonn, setLon] = useState(Number(lon));
   const [locations, setLocations] = useState([]);
-
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
   const [loading, setLoading] = useState(false);
@@ -74,18 +73,24 @@ const HotelDetailPage = () => {
 
   return (
     <div className="flex flex-col md:flex-row h-[calc(100vh-4rem)] bg-[#fff7ed] text-[#1e293b] font-sans overflow-hidden">
-
       <div className="md:w-1/2 h-[50vh] md:h-full overflow-y-auto px-6 py-6 space-y-6 relative z-10 bg-white">
         <img
           src={hotel.imageUrl}
           alt={hotel.name}
           className="w-full h-64 object-cover rounded-2xl shadow-md"
         />
-        <h2 className="text-3xl font-bold">{hotel.name}</h2>
+        <div className="flex justify-between items-center">
+          <h2 className="text-3xl font-bold">{hotel.name}</h2>
+          <button
+            className="bg-[#f97316] text-white px-4 py-2 rounded-lg shadow hover:bg-[#ea580c] transition duration-200"
+            onClick={() => alert("Booking feature coming soon!")}
+          >
+            Book Your Room
+          </button>
+        </div>
         <p className="text-[#334155]">{hotel.description}</p>
         <p className="text-[#475569]">{hotel.address}</p>
         <p className="font-semibold text-xl">₹{hotel.pricePerNight} / night</p>
-
         <div className="flex flex-col gap-4">
           <button
             onClick={() => handleFetchPlaces("cafe")}
@@ -98,7 +103,6 @@ const HotelDetailPage = () => {
           >
             {buttonLoading === "cafe" ? "Loading Cafes..." : "☕ Show Nearest Cafes"}
           </button>
-
           <button
             onClick={() => handleFetchPlaces("public-transport")}
             className={`${
@@ -113,7 +117,6 @@ const HotelDetailPage = () => {
               : "🚍 Show Nearest Public Transport"}
           </button>
         </div>
-
         <div className="mt-6 space-y-3">
           <label className="block font-semibold">Ask something about this hotel</label>
           <input
@@ -129,7 +132,6 @@ const HotelDetailPage = () => {
           >
             {loading ? "Thinking..." : "Ask"}
           </button>
-
           {answer && !loading && (
             <div className="mt-4 p-4 bg-[#ffedd5] border border-[#f97316] rounded-lg text-[#1e293b] shadow-sm">
               <strong>Answer:</strong> <br />
@@ -147,7 +149,6 @@ const HotelDetailPage = () => {
             </div>
           </div>
         )}
-
         <MapContainer
           center={[latt, lonn]}
           zoom={14}
@@ -158,7 +159,6 @@ const HotelDetailPage = () => {
             attribution="&copy; OpenStreetMap contributors"
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-
           <Marker position={[latt, lonn]} icon={hotelIcon}>
             <Popup>
               <div className="text-center text-sm">
@@ -168,7 +168,6 @@ const HotelDetailPage = () => {
               </div>
             </Popup>
           </Marker>
-
           {locations
             .filter((loc) => loc.name && loc.address && loc.distance)
             .map((loc, index) => (

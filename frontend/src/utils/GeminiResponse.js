@@ -55,8 +55,11 @@ export const GeminiResponseH = async (obj, hotelList = []) => {
 
             Hotel data:
             ${hotelsText}
+            search hotel names and addresses in the hotel data above.
 
             User question: ${obj.question}
+            If the hotel data is not relevant, please answer the question using your own knowledge. If the user asks for more information, you can provide it, but keep it concise and relevant to the question asked.
+            be prepared to answer questions related to distance from nearest bustand, airport, railway station, and other nearby tourist attractions.
             feel free to use your own knowledge if the hotel data is not relevant.and everything you know to answer the question if data is not sufficient`,
           },
         ],

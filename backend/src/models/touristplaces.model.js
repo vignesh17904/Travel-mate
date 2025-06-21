@@ -15,8 +15,8 @@ const touristPlaceSchema = new Schema({
         required: true,
     },
     location: {
-        type: String,
-        required: true,
+      lat: { type: Number, required: true },
+      lon: { type: Number, required: true },
     },
     imageUrl: {
         type: String,

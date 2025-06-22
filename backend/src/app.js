@@ -23,10 +23,12 @@ import hotelrouter from './routes/hotels.routes.js';
 app.use('/api/hotels', hotelrouter);
 
 import userRouter from './routes/user.routes.js';
-app.use("/api/v1/users",userRouter)
+app.use("/api/users",userRouter)
 
 import cityrouter from './routes/cities.routes.js';
 app.use("/api/cities",cityrouter)
 
+import bookingRoutes from "./routes/bookings.routes.js";
 
+app.use("/api/bookings", bookingRoutes);
 export {app};

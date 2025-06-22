@@ -20,7 +20,7 @@ const Home = () => {
 
   const handleLogout = async () => {
   try {
-    await AxiosInstance.post("/v1/users/logout", {});
+    await AxiosInstance.post("/users/logout", {});
     setUser(null);
     navigate("/");
   } catch (error) {

@@ -33,7 +33,13 @@ const hotelSchema = new Schema({
         type:mongoose.Types.ObjectId,
         ref: "User",
         required:true
-    }
+    },
+    totalRooms: {
+  type: Number,
+  required: true,
+  default: 10, 
+},
+
 }, { timestamps: true });
 const Hotel = mongoose.model("Hotel", hotelSchema);
 export default Hotel;

@@ -6,7 +6,7 @@ const UserContextProvider = ({ children }) => {
 
   const fetchUser = async () => {
     try {
-      const res = await AxiosInstance.get("/v1/users/me");
+      const res = await AxiosInstance.get("/users/me");
       setUser(res.data.data);
     } catch (err) {
       setUser(null);

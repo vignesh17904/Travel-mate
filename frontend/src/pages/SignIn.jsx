@@ -18,7 +18,7 @@ export default function SignIn() {
   flow: "auth-code",
   onSuccess: async ({ code }) => {
     try {
-      await AxiosInstance.post("/v1/users/glogin", { code });
+      await AxiosInstance.post("/users/glogin", { code });
       navigate("/");
     } catch (err) {
       console.error(err.response?.data || err.message);
@@ -37,7 +37,7 @@ const handleChange = (e) => {
 const handleSubmit = async (e) => {
   e.preventDefault();
   try {
-    await AxiosInstance.post("v1/users/login", formData);
+    await AxiosInstance.post("/users/login", formData);
     navigate("/");
   } catch (err) {
     console.error(err.response?.data || err.message);

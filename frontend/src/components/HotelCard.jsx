@@ -2,13 +2,11 @@ import { Link, useParams } from 'react-router-dom';
 import React from 'react'; 
 
 const HotelCard = ({ hotel,cityname }) => {
-  const { _id, name, imageUrl, description, address, pricePerNight,location } = hotel;
+  const {_id, name, imageUrl, description, address, pricePerNight,location } = hotel;
   console.log("hotel in hotelcard",hotel);
   return (
     <Link
-      to={{
-        pathname: `/${cityname}/Hotels/${location.lon}/${location.lat}`,
-      }}
+       to={`/${cityname}/Hotels/${location.lon}/${location.lat}/${_id}`}
       state={{ hotel }}
       className="block bg-white rounded-xl shadow hover:shadow-lg transition-shadow duration-300 overflow-hidden justify-between"
     >

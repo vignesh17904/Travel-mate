@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams, useNavigate } from "react-router-dom";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
@@ -22,7 +22,8 @@ const HotelDetailPage = () => {
   });
 
   const location = useLocation();
-  const { lon, lat } = useParams();
+  const navigate = useNavigate();
+  const { lon, lat, _id, CityName } = useParams();
   const [hotel, setHotel] = useState(location.state?.hotel || null);
   const [latt, setLat] = useState(Number(lat));
   const [lonn, setLon] = useState(Number(lon));
@@ -69,6 +70,10 @@ const HotelDetailPage = () => {
     }
   };
 
+  const handleBookNow = () => {
+   navigate(`/${CityName}/Hotels/book/${_id}`);
+  };
+
   if (!hotel) return <div>Loading...</div>;
 
   return (
@@ -83,7 +88,7 @@ const HotelDetailPage = () => {
           <h2 className="text-3xl font-bold">{hotel.name}</h2>
           <button
             className="bg-[#f97316] text-white px-4 py-2 rounded-lg shadow hover:bg-[#ea580c] transition duration-200"
-            onClick={() => alert("Booking feature coming soon!")}
+            onClick={handleBookNow}
           >
             Book Your Room
           </button>
@@ -175,13 +180,9 @@ const HotelDetailPage = () => {
                 <Popup>
                   <div className="space-y-1 text-sm text-[#1e293b]">
                     <div className="font-bold text-base">{loc.name}</div>
-                    <div className="text-[13px] text-[#475569]">
-                      📍 {loc.address}
-                    </div>
+                    <div className="text-[13px] text-[#475569]">📍 {loc.address}</div>
                     {loc.type && (
-                      <div className="text-[#ea580c] font-semibold">
-                        🚍 {loc.type}
-                      </div>
+                      <div className="text-[#ea580c] font-semibold">🚍 {loc.type}</div>
                     )}
                     {loc.distance && (
                       <div className="text-[#334155]">📏 {loc.distance}m</div>

@@ -1,17 +1,21 @@
 import Booking from "../models/bookings.model.js";
 import Hotel from "../models/hotels.model.js";
-import {asyncHandler} from "../utils/asyncHandler.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
+import { ApiError } from "../utils/ApiError.js";
 
 export const createBooking = asyncHandler(async (req, res) => {
   const { hotelId, checkIn, checkOut, roomsBooked } = req.body;
   const userId = req.user._id;
 
   if (!hotelId || !checkIn || !checkOut || !roomsBooked) {
-    return res.status(400).json({ message: "Missing required fields" });
+    throw new ApiError(400, "Missing required fields");
   }
 
   const hotel = await Hotel.findById(hotelId);
-  if (!hotel) return res.status(404).json({ message: "Hotel not found" });
+  if (!hotel) {
+    throw new ApiError(404, "Hotel not found");
+  }
 
   const overlappingBookings = await Booking.find({
     hotel: hotelId,
@@ -25,7 +29,7 @@ export const createBooking = asyncHandler(async (req, res) => {
   );
 
   if (roomsAlreadyBooked + roomsBooked > hotel.totalRooms) {
-    return res.status(400).json({ message: "Not enough rooms available" });
+    throw new ApiError(400, "Not enough rooms available");
   }
 
   const days = Math.ceil(
@@ -43,7 +47,9 @@ export const createBooking = asyncHandler(async (req, res) => {
     totalPrice,
   });
 
-  res.status(201).json({ message: "Booking successful", booking });
+  return res
+    .status(201)
+    .json(new ApiResponse(201, booking, "Booking successful"));
 });
 
 export const getBookingsByUser = asyncHandler(async (req, res) => {
@@ -53,19 +59,22 @@ export const getBookingsByUser = asyncHandler(async (req, res) => {
     .populate("hotel", "name address pricePerNight")
     .populate("user", "name email");
 
-  res.status(200).json({ message: "Bookings fetched successfully", bookings });
+  return res
+    .status(200)
+    .json(new ApiResponse(200, bookings, "Bookings fetched successfully"));
 });
 
 export const getBookingsByOwner = asyncHandler(async (req, res) => {
   const ownerId = req.user._id;
 
   const hotelsOwned = await Hotel.find({ owner: ownerId }).select("_id");
-
-  const hotelIds = hotelsOwned.map(h => h._id);
+  const hotelIds = hotelsOwned.map((h) => h._id);
 
   const bookings = await Booking.find({ hotel: { $in: hotelIds } })
     .populate("hotel", "name address")
     .populate("user", "name email");
 
-  res.status(200).json({ message: "Bookings fetched for owner", bookings });
+  return res
+    .status(200)
+    .json(new ApiResponse(200, bookings, "Bookings fetched for owner"));
 });

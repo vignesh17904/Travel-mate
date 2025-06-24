@@ -6,15 +6,16 @@ import {
     gethotelsbyapi,addHotels,
     gethotelsfromdb,
     getnearestcafes,
-    getnearestpublictransport
+    getnearestpublictransport,
+    gethotelsbyid
 } from "../controllers/hotels.controller.js";
 
 
 const router = Router();
 
-router.route("/:placeid").get(
+/*router.route("/:placeid").get(
     gethotelsbyapi
-);
+);*/
 
 router.route("/add-hotel").post(
     verifyjwt,
@@ -25,7 +26,10 @@ router.route("/add-hotel").post(
 router.route("/db/:placeid").get(
     gethotelsfromdb
 )
-
+router.route("/by-id/:id").get(
+    verifyjwt,
+    gethotelsbyid
+)
 router.route("/cafe/:lon/:lat").get(
     getnearestcafes
 )

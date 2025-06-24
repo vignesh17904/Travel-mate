@@ -194,5 +194,14 @@ const getnearestpublictransport = asyncHandler(async (req, res) => {
     throw new ApiError(500, "Failed to fetch nearest stops");
   }
 });
+const gethotelsbyid = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  if (!id) throw new ApiError(400, "Hotel ID is required");
 
-export { gethotelsbyapi, addHotels, gethotelsfromdb, getnearestcafes, getnearestpublictransport };
+  const hotel = await Hotel.findById(id);
+  if (!hotel) throw new ApiError(404, "Hotel not found");
+
+  return res.status(200).json(new ApiResponse(200, hotel, "Hotel fetched successfully"));
+});
+
+export { gethotelsbyapi, addHotels, gethotelsfromdb, getnearestcafes, getnearestpublictransport,gethotelsbyid };

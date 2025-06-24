@@ -10,7 +10,7 @@ import SignIn from "./pages/SignIn.jsx";
 import SignUp from "./pages/SignUp.jsx";
 import HotelDetails from "./components/HotelDetails.jsx";
 import AddHotel from "./components/Addhotel.jsx";
-
+import BookingPage from "./pages/City/BookingPage.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -29,12 +29,16 @@ const router = createBrowserRouter([
         element: <Hotels />,
       },
       {
-        path: "Hotels/:lon/:lat", 
+        path: "Hotels/:lon/:lat/:_id",
         element: <HotelDetails />,
       },
       {
         path: "Hotels/add-hotel",
         element: <AddHotel />,
+      },
+      {
+        path: "Hotels/book/:_id", 
+        element: <BookingPage />,
       },
       {
         path: "Sample1",

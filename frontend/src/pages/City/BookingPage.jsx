@@ -40,29 +40,32 @@ const BookingPage = () => {
     }
   }, [checkIn, checkOut, roomsBooked, hotel]);
 
-  const handleBooking = async () => {
-    if (!checkIn || !checkOut || !roomsBooked || totalPrice === 0) return;
-    setLoading(true);
-    setError("");
-    try {
-      const res = await AxiosInstance.post(
-        "/bookings/makebooking",
-        {
-          hotelId: _id,
-          checkIn,
-          checkOut,
-          roomsBooked: Number(roomsBooked),
-        },
-        { withCredentials: true }
-      );
-      setSuccess("Booking successful!");
-      setTimeout(() => navigate("/"), 2000);
-    } catch (err) {
-      setError(err?.response?.data?.message || "Something went wrong");
-    } finally {
-      setLoading(false);
-    }
-  };
+ const handleBooking = async () => {
+  if (!checkIn || !checkOut || !roomsBooked || totalPrice === 0) return;
+  setLoading(true);
+  setError("");
+  setSuccess("");
+
+  try {
+    const res = await AxiosInstance.post(
+      "/bookings/makebooking",
+      {
+        hotelId: _id,
+        checkIn,
+        checkOut,
+        roomsBooked: Number(roomsBooked),
+      },
+      { withCredentials: true }
+    );
+    setSuccess("Booking successful!");
+    setTimeout(() => navigate("/"), 2000);
+  } catch (err) {
+    const message = err?.response?.data?.message || "Something went wrong";
+    setError(message);
+  } finally {
+    setLoading(false);
+  }
+};
 
   if (!hotel) return <div className="p-8 text-center">Loading hotel info...</div>;
 

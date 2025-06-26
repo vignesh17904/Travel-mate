@@ -3,20 +3,20 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export const fetchphoto = async (query) => {
-    const url = "https://www.googleapis.com/customsearch/v1";
+    const url = "https://pixabay.com/api/";
   try {
     const response = await axios.get(url, {
       params: {
         q: query,
-        searchType: "image",
-        key: process.env.GOOGLE_API_KEY,
-        cx: process.env.CUSTOM_SEARCH_ENGINE_ID,
+        key: process.env.PIXABAY_API_KEY,
+        per_page:3,
       },
     });
 
-    if (response.data.items && response.data.items.length > 0) {
-      return response.data.items[0].link; 
-    } else {
+    const hits = response.data.hits;
+    if (hits && hits.length > 0) {
+      return hits[0].webformatURL; 
+    }  else {
       return "/locationplaceholder.jpg"; 
     }
   } catch (error) {

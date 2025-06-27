@@ -11,6 +11,9 @@ import SignUp from "./pages/SignUp.jsx";
 import HotelDetails from "./components/HotelDetails.jsx";
 import AddHotel from "./components/Addhotel.jsx";
 import BookingPage from "./pages/City/BookingPage.jsx";
+import MyBookings from "./pages/MyBookings.jsx";
+import OwnerBookings from "./pages/OwnerBookings.jsx";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -41,12 +44,12 @@ const router = createBrowserRouter([
         element: <BookingPage />,
       },
       {
-        path: "Sample1",
-        element: <Sample1 />,
+        path: "owner-bookings",
+        element: <OwnerBookings />,
       },
       {
-        path: "Sample2",
-        element: <Sample2 />,
+        path: "my-bookings",
+        element: <MyBookings />,
       },
     ],
   },

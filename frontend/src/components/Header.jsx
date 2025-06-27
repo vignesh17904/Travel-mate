@@ -14,7 +14,20 @@ export default function Header() {
   const navItems = [
     { to: "", label: "TouristSpots", exact: true },
     { to: "Hotels", label: "Hotels" },
-    { to: "Sample1", label: "Sample1" },
+    {
+    to:
+      user?.role === "hotelowner"
+        ? "owner-bookings"
+        : user
+        ? "my-bookings"
+        : "/SignIn",
+    label:
+      user?.role === "hotelowner"
+        ? "Hotel Bookings"
+        : user
+        ? "My Bookings"
+        : "Bookings",
+  },
     { to: "Sample2", label: "Sample2" },
   ];
 

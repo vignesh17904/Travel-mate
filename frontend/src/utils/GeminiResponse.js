@@ -1,6 +1,10 @@
 import { GoogleGenAI } from "@google/genai";
 const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
 
+const chat = ai.chats.create({
+  model: "gemini-2.0-flash",
+});
+
 export const GeminiResponse = async (obj) => {
   try {
     const response = await ai.models.generateContent({
@@ -26,7 +30,6 @@ export const GeminiResponse = async (obj) => {
   }
 };
 
-
 const hotelListToText = (hotels = []) => {
   return hotels
     .map((hotel, index) => {
@@ -45,34 +48,24 @@ export const GeminiResponseH = async (obj, hotelList = []) => {
   try {
     const hotelsText = hotelListToText(hotelList);
 
-    const prompt = [
-      {
-        role: "user",
-        parts: [
-          {
-            text: `You are a travel and accommodation expert. Use the following hotel data for ${obj.placename} if it's relevant to the user's question.
-            You may also use your own knowledge. Keep responses under ${obj.words} words unless the user asks for more. Feel free to ask follow-up questions or offer help.
+    const promptText = `
+You are a travel and accommodation expert. Use the following hotel data for ${obj.placename} if it's relevant to the user's question.
+You may also use your own knowledge. Keep responses under ${obj.words} words unless the user asks for more. Feel free to ask follow-up questions or offer help.
 
-            Hotel data:
-            ${hotelsText}
-            search hotel names and addresses in the hotel data above.
+Hotel data:
+${hotelsText}
 
-            User question: ${obj.question}
-            If the hotel data is not relevant, please answer the question using your own knowledge. If the user asks for more information, you can provide it, but keep it concise and relevant to the question asked.
-            be prepared to answer questions related to distance from nearest bustand, airport, railway station, and other nearby tourist attractions.
-            feel free to use your own knowledge if the hotel data is not relevant.and everything you know to answer the question if data is not sufficient`,
-          },
-        ],
-      },
-    ];
+User question: ${obj.question}
 
-    const response = await ai.models.generateContent({
-      model: "gemini-2.0-flash",
-      contents: prompt,
+If the hotel data is not relevant, answer using your own knowledge. Keep it concise and relevant.
+Be prepared to answer questions about nearby transport and attractions. Use your own knowledge if hotel data is insufficient.
+`;
+
+    const response = await chat.sendMessage({
+      message: promptText,
     });
 
-    const output = response?.text || "No response.";
-    return output.trim();
+    return response.text?.trim() || "No response.";
   } catch (error) {
     console.error("Error fetching AI response:", error);
     return "No response.";

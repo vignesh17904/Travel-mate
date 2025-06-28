@@ -30,7 +30,7 @@ const userSchema = new Schema(
     password: {
       type: String,
     },
-    refreshtoken: {
+    refreshToken: {
       type: String,
     },
     role: {
@@ -63,7 +63,7 @@ userSchema.methods.generateAccessToken = function () {
 
 userSchema.methods.generateRefreshToken = function () {
   return jwt.sign(
-    { id: this._id, email: this.email },
+    { _id: this._id, email: this.email },
     process.env.REFRESH_TOKEN_SECRET,
     { expiresIn: '7d' }
   );

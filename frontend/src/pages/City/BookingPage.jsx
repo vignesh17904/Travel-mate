@@ -55,7 +55,7 @@ const BookingPage = () => {
         checkOut,
         roomsBooked: Number(roomsBooked),
       },
-      { withCredentials: true }
+    
     );
     setSuccess("Booking successful!");
     setTimeout(() => navigate("/"), 2000);

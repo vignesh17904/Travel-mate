@@ -1,6 +1,6 @@
 import { Router} from "express";
 import { verifyjwt } from "../middleware/auth.middleware.js";
-import { signUp,gsignUp,logoutUser,getUser,login,glogin,} from "../controllers/user.controller.js";
+import { signUp,gsignUp,logoutUser,getUser,login,glogin,refreshAccessToken} from "../controllers/user.controller.js";
 const router = Router();
 router.route("/signup").post(signUp);
 router.route("/gsignup").post(gsignUp);
@@ -9,4 +9,5 @@ router.post('/glogin', glogin);
 router.post('/logout',verifyjwt,logoutUser);
 router.get('/getuser', verifyjwt, getUser);
 router.get('/me', verifyjwt, getUser);
+router.post('/refresh', refreshAccessToken);
 export default router;

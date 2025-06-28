@@ -303,6 +303,52 @@ const logoutUser = asyncHandler(async(req, res) => {
     .json(new ApiResponse(200, {}, "User logged Out"));
 });
 
+ const refreshAccessToken = asyncHandler(async (req, res) => {
+  const incomingToken = req.cookies.refreshToken || req.body.refreshToken;
+
+  if (!incomingToken) {
+    throw new ApiError(401, "Unauthorized access - No refresh token");
+  }
+
+  try {
+    const decodedToken = jwt.verify(incomingToken, process.env.REFRESH_TOKEN_SECRET);
+
+    const user = await User.findById(decodedToken._id); 
+    if (!user) {
+      throw new ApiError(401, "Invalid refresh token - user not found");
+    }
+
+    if (incomingToken !== user.refreshToken) {
+      throw new ApiError(401, "Refresh token expired or reused");
+    }
+
+    const accessToken = user.generateAccessToken();
+    const newRefreshToken = user.generateRefreshToken();
+
+    user.refreshToken = newRefreshToken;
+    await user.save();
+
+    const options = {
+      httpOnly: true,
+      secure: true,
+    };
+
+    return res
+      .status(200)
+      .cookie("accessToken", accessToken, options)
+      .cookie("refreshToken", newRefreshToken, options)
+      .json(
+        new ApiResponse(
+          200,
+          { accessToken, refreshToken: newRefreshToken },
+          "Access token refreshed"
+        )
+      );
+  } catch (error) {
+    throw new ApiError(401, error?.message || "Invalid refresh token");
+  }
+});
+
 export {
   signUp,
   generateAccessandRefreshtokens,
@@ -311,4 +357,5 @@ export {
   glogin,
   logoutUser,
   getUser,
+  refreshAccessToken
 };

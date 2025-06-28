@@ -19,8 +19,9 @@ const TouristCard = ({ place, cityname }) => {
       />
       <div className="p-4 flex flex-col justify-between h-70">
         <h2 className="text-xl font-bold text-gray-800 mb-2">{name}</h2>
-        <p className="text-gray-600 text-sm md:text-base mb-2">{description}</p>
-        <p className="text-blue-700 text-sm">{address}</p>
+          <p className="text-blue-700 text-sm">{address}</p>
+        {/*<p className="text-gray-600 text-sm md:text-base mb-2">{description}</p>*/}
+      
       </div>
     </Link>
   );

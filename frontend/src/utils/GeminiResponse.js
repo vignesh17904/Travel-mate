@@ -1,4 +1,5 @@
 import { GoogleGenAI } from "@google/genai";
+
 const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
 
 const chat = ai.chats.create({
@@ -71,3 +72,24 @@ Be prepared to answer questions about nearby transport and attractions. Use your
     return "No response.";
   }
 };
+
+export const GeminiResponseT = async (obj) => {
+  try {
+    const promptText = `
+You are a travel expert. Provide travel plans, suggested itineraries, and distances from the nearest airport, railway station, and bus stops for ${obj.placename}.
+Also answer follow-up questions using prior context if relevant.
+
+User question: ${obj.question}
+`;
+
+    const response = await chat.sendMessage({
+      message: promptText,
+    });
+
+    return response.text?.trim() || "No response.";
+  } catch (error) {
+    console.error("Error fetching travel response:", error);
+    return "No response.";
+  }
+};
+

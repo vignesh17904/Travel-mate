@@ -59,7 +59,7 @@ ${hotelsText}
 User question: ${obj.question}
 
 If the hotel data is not relevant, answer using your own knowledge. Keep it concise and relevant.
-Be prepared to answer questions about nearby transport and attractions. Use your own knowledge if hotel data is insufficient.
+Be prepared to answer questions about nearby transport and attractions. Use your own knowledge if hotel data is insufficient.**Ensure the response is well-structured in paragraphs with line breaks.**
 `;
 
     const response = await chat.sendMessage({
@@ -76,8 +76,8 @@ Be prepared to answer questions about nearby transport and attractions. Use your
 export const GeminiResponseT = async (obj) => {
   try {
     const promptText = `
-You are a travel expert. Provide travel plans, suggested itineraries, and distances from the nearest airport, railway station, and bus stops for ${obj.placename}.
-Also answer follow-up questions using prior context if relevant.
+You are a travel expert.If asked Provide travel plans, suggested itineraries, and distances from the nearest airport, railway station, and bus stops for ${obj.placename}.
+Also answer follow-up questions using prior context if relevant.**Ensure the response is well-structured in paragraphs with line breaks.**
 
 User question: ${obj.question}
 `;

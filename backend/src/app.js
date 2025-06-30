@@ -29,6 +29,8 @@ import cityrouter from './routes/cities.routes.js';
 app.use("/api/cities",cityrouter)
 
 import bookingRoutes from "./routes/bookings.routes.js";
-
 app.use("/api/bookings", bookingRoutes);
+
+import paymentRoutes from "./routes/payment.routes.js";
+app.use("/api/payment", paymentRoutes);
 export {app};

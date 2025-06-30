@@ -124,7 +124,7 @@ export default function Header() {
 
 
           {user && (
-            <button onClick={() => setShowProfile(true)}>
+            <button onClick={() => setShowProfile(true)} className="cursor-pointer">
               {user.avatar ? (
                 <img
                   src={user.avatar}

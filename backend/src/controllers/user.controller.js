@@ -7,9 +7,9 @@ import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import path from "path";
 
-const generateAccessandRefreshtokens = async (email) => {
+const generateAccessandRefreshtokens = async (username) => {
   try {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ username });
     if (!user) {
       throw new ApiError(404, "User not found");
     }
@@ -156,18 +156,18 @@ const gsignUp = asyncHandler(async (req, res) => {
     );
 });
 const login = asyncHandler(async (req, res) => {
-  const { email, password } = req.body;
+  const { username, password } = req.body;
 
-  if ([email, password].some((field) => field?.trim() === "")) {
-    throw new ApiError(400, "Email and password are required");
+  if ([username, password].some((field) => field?.trim() === "")) {
+    throw new ApiError(400, "Username and password are required");
   }
 
-  const user = await User.findOne({ email });
+  const user = await User.findOne({ username });
   if (!user) {
     throw new ApiError(404, "User not found");
   }
 
-  // Skip for Google users
+  
   if (user.isGoogleUser) {
     throw new ApiError(400, "Use Google Sign-In for this account");
   }
@@ -178,7 +178,7 @@ const login = asyncHandler(async (req, res) => {
   }
 
   const { accessToken, refreshToken } = await generateAccessandRefreshtokens(
-    email
+    user.username
   );
 
   const loggedInUser = await User.findById(user._id).select(
@@ -202,6 +202,7 @@ const login = asyncHandler(async (req, res) => {
       )
     );
 });
+
 
 
 const glogin = asyncHandler(async (req, res) => {

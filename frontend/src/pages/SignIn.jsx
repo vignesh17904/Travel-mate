@@ -41,7 +41,7 @@ const handleSubmit = async (e) => {
     navigate("/");
   } catch (err) {
     console.error(err.response?.data || err.message);
-    setErrorMessage("Incorrect email or password");
+    setErrorMessage("Incorrect username or password");
   }
 };
 
@@ -58,11 +58,11 @@ const handleSubmit = async (e) => {
 
         <form className="space-y-4" onSubmit={handleSubmit}>
           <input
-            name="email"
-            value={formData.email}
+            name="username"
+            value={formData.username}
             onChange={handleChange}
-            type="email"
-            placeholder="example@mail.com"
+            type="username"
+            placeholder="username"
             className="w-full px-4 py-2 border border-gray-300 rounded-lg"
           />
           <input

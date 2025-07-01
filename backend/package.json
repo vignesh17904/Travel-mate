@@ -4,7 +4,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-      "start": "node src/index.js",
+    "start": "node src/index.js",
     "dev": "nodemon src/index.js"
   },
   "keywords": [],
@@ -24,7 +24,8 @@
     "lru-cache": "^11.1.0",
     "mongoose": "^8.15.1",
     "multer": "^2.0.1",
-    "pexels": "^1.4.0"
+    "pexels": "^1.4.0",
+    "stripe": "^18.2.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.10"

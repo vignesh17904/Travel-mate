@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { loadStripe } from "@stripe/stripe-js";
 import AxiosInstance from "@/utils/ApiConfig";
 
@@ -7,7 +7,6 @@ const stripePromise = loadStripe(import.meta.env.VITE_PUBLISHABLE_KEY);
 
 const BookingPage = () => {
   const { _id } = useParams();
-  const navigate = useNavigate();
 
   const [hotel, setHotel] = useState(null);
   const [checkIn, setCheckIn] = useState("");
@@ -16,7 +15,6 @@ const BookingPage = () => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
 
   useEffect(() => {
     const fetchHotel = async () => {
@@ -44,36 +42,33 @@ const BookingPage = () => {
   }, [checkIn, checkOut, roomsBooked, hotel]);
 
   const handleBooking = async () => {
-    if (!checkIn || !checkOut || !roomsBooked || totalPrice === 0) return;
+    if (!checkIn || !checkOut || totalPrice === 0) return;
     setLoading(true);
     setError("");
-    setSuccess("");
 
     try {
-      // Save booking info locally to finalize after payment
-      localStorage.setItem(
-        "bookingDetails",
-        JSON.stringify({
-          hotelId: _id,
-          checkIn,
-          checkOut,
-          roomsBooked,
-        })
-      );
+     
+      const bookingRes = await AxiosInstance.post("/bookings/makebooking", {
+        hotelId: _id,
+        checkIn,
+        checkOut,
+        roomsBooked,
+      });
 
-      // Create Stripe Checkout session
-      const res = await AxiosInstance.post("/payment/create-checkout-session", {
+      const { bookingId, totalPrice: serverPrice } = bookingRes.data.data;
+
+     
+      const paymentRes = await AxiosInstance.post("/payment/create-checkout-session", {
         hotelName: hotel.name,
-        totalPrice,
+        totalPrice: serverPrice,
+        bookingId,
       });
 
       const stripe = await stripePromise;
-      await stripe.redirectToCheckout({ sessionId: res.data.data.sessionId });
+      await stripe.redirectToCheckout({ sessionId: paymentRes.data.data.sessionId });
     } catch (err) {
-      console.log("error creating checkout session:", err);
-      const message = err?.response?.data?.message || "Something went wrong";
-      setError(message);
-      setError("Payment initiation failed");
+      const msg = err?.response?.data?.message || "Something went wrong";
+      setError(msg);
     } finally {
       setLoading(false);
     }
@@ -141,7 +136,6 @@ const BookingPage = () => {
         {loading ? "Processing..." : "Confirm Booking & Pay"}
       </button>
 
-      {success && <p className="text-green-600 mt-4 font-medium">{success}</p>}
       {error && <p className="text-red-600 mt-4 font-medium">{error}</p>}
     </div>
   );

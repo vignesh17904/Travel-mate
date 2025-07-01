@@ -28,6 +28,12 @@ const bookingSchema = new Schema({
     type: Number,
     required: true,
   },
+  paymentStatus: {
+  type: String,
+  enum: ["pending", "paid", "cancelled"],
+  default: "pending",
+},
+
 }, { timestamps: true });
 
 const Booking = mongoose.model("Booking", bookingSchema);

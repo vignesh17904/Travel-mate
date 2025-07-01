@@ -49,7 +49,7 @@ export const createBooking = asyncHandler(async (req, res) => {
 
   return res
     .status(201)
-    .json(new ApiResponse(201, booking, "Booking successful"));
+    .json(new ApiResponse(201, { bookingId: booking._id, totalPrice }, "Booking successful"));
 });
 
 export const getBookingsByUser = asyncHandler(async (req, res) => {
@@ -77,4 +77,21 @@ export const getBookingsByOwner = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .json(new ApiResponse(200, bookings, "Bookings fetched for owner"));
+});
+
+export const updateBookingPaymentStatus = asyncHandler(async (req, res) => {
+  const { bookingId, status } = req.body;
+  const booking = await Booking.findById(bookingId);
+  if (!booking) throw new ApiError(404, "Booking not found");
+
+  booking.paymentStatus = status;
+  await booking.save();
+
+  return res.status(200).json(new ApiResponse(200, booking, "Payment status updated"));
+});
+
+export const cancelBooking = asyncHandler(async (req, res) => {
+  const { bookingId } = req.body;
+  await Booking.findByIdAndDelete(bookingId);
+  return res.status(200).json(new ApiResponse(200, null, "Booking cancelled"));
 });

@@ -7,7 +7,7 @@ const TouristCard = ({ place, cityname }) => {
   return (
     <Link
       to={{
-        pathname: `/${cityname}/TouristSpots/${location.lon}/${location.lat}`,
+        pathname: `/${cityname}/${location.lon}/${location.lat}`,
       }}
       state={{ place }}
       className="block bg-white rounded-xl shadow hover:shadow-lg transition-shadow duration-300 overflow-hidden justify-between"

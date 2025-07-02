@@ -57,7 +57,7 @@ const signUp = asyncHandler(async (req, res) => {
   }
 
   const { accessToken, refreshToken } = await generateAccessandRefreshtokens(
-    email
+    username
   );
 
   const loggedInUser = await User.findById(createdUser._id).select(
@@ -131,7 +131,7 @@ const gsignUp = asyncHandler(async (req, res) => {
   }
 
   const { accessToken, refreshToken } = await generateAccessandRefreshtokens(
-    email
+    user.username 
   );
 
   const loggedInUser = await User.findById(user._id).select(
@@ -249,7 +249,7 @@ const glogin = asyncHandler(async (req, res) => {
   }
 
   const { accessToken, refreshToken } = await generateAccessandRefreshtokens(
-    email
+    user.username
   );
 
   const loggedInUser = await User.findById(user._id).select(

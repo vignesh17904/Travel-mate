@@ -12,6 +12,7 @@ import MyBookings from "./pages/MyBookings.jsx";
 import OwnerBookings from "./pages/OwnerBookings.jsx";
 import PaymentSuccess from "./pages/City/PaymentSuccess.jsx";
 import PaymentCancel from "./pages/City/PaymentCancel.jsx"; 
+import TouristCardDetails from "./components/TouristCardDetails.jsx";
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <TouristSpots />,
+      },
+      {
+        path :":lon/:lat",
+        element: <TouristCardDetails/>
       },
       {
         path: "Hotels",

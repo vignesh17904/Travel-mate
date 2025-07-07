@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import UserContext from "../context/UserContext.js";
 import { useNavigate, useParams } from "react-router";
-import AxiosInstance from "../utils/AxiosInstance.js"; 
+import AxiosInstance from "../utils/ApiConfig.js"; 
 
 const AddHotel = () => {
   const { user } = useContext(UserContext);

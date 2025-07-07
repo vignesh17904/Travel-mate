@@ -1,5 +1,5 @@
 import HotelCard from "../../components/HotelCard.jsx";
-import AxiosInstance from "../../utils/AxiosInstance.js";
+import AxiosInstance from "../../utils/ApiConfig.js";
 import React, { useEffect, useState } from "react";
 import { useLocation, useOutletContext, useParams } from "react-router-dom";
 import ChatbotLauncher from "../Chatbot/Chatbotlauncher.jsx";

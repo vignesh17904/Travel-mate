@@ -1,5 +1,5 @@
-import TouristCard from "@/components/TouristCard.jsx";
-import AxiosInstance from "@/utils/ApiConfig.js";
+import TouristCard from "../../components/Touristcard.jsx";
+import AxiosInstance from "../../utils/AxiosInstance.js";
 import React, { useEffect, useState } from "react";
 import { useLocation, useOutletContext, useParams } from "react-router-dom";
 

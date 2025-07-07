@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Outlet, useLocation, useParams } from "react-router-dom";
 import Header from "../../components/Header.jsx";
 import Footer from "../../components/Footer.jsx";
-import AxiosInstance from "@/utils/ApiConfig.js";
+import AxiosInstance from "../../utils/AxiosInstance.js";
 
 export default function CityLayout() {
   const { CityName } = useParams(); 

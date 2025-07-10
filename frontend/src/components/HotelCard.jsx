@@ -1,12 +1,17 @@
-import { Link, useParams } from 'react-router-dom';
-import React from 'react'; 
+import { Link } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { saveHotelToLocalStorage } from '@/utils/placeStorage.js';
 
-const HotelCard = ({ hotel,cityname }) => {
-  const {_id, name, imageUrl, description, address, pricePerNight,location } = hotel;
-  console.log("hotel in hotelcard",hotel);
+const HotelCard = ({ hotel, cityname }) => {
+  const { _id, name, imageUrl, description, address, pricePerNight, location } = hotel;
+
+  useEffect(() => {
+    saveHotelToLocalStorage(hotel);
+  }, [hotel]);
+
   return (
     <Link
-       to={`/${cityname}/Hotels/${location.lon}/${location.lat}/${_id}`}
+      to={`/${cityname}/Hotels/${location.lon}/${location.lat}/${_id}`}
       state={{ hotel }}
       className="block bg-white rounded-xl shadow hover:shadow-lg transition-shadow duration-300 overflow-hidden justify-between"
     >
@@ -18,7 +23,7 @@ const HotelCard = ({ hotel,cityname }) => {
       <div className="p-4 flex flex-col justify-between h-70">
         <h2 className="text-xl font-bold text-gray-800 mb-2">{name}</h2>
         <p className="text-gray-600 text-sm md:text-base mb-2">{description}</p>
-        {pricePerNight && ( 
+        {pricePerNight && (
           <p className="text-green-700 text-lg font-semibold">
             ₹{pricePerNight} / night
           </p>

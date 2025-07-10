@@ -3,8 +3,10 @@ import { useLocation, useParams, useNavigate } from "react-router-dom";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
+
 import AxiosInstance from "@/utils/ApiConfig";
 import { GeminiResponse } from "@/utils/GeminiResponse.js";
+import { getHotelFromLocalStorage } from "@/utils/placeStorage.js";
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -14,16 +16,10 @@ L.Icon.Default.mergeOptions({
 });
 
 const HotelDetailPage = () => {
-  const hotelIcon = new L.Icon({
-    iconUrl: "https://cdn-icons-png.flaticon.com/512/684/684908.png",
-    iconSize: [30, 40],
-    iconAnchor: [15, 40],
-    popupAnchor: [0, -35],
-  });
-
+  const { lon, lat, _id, CityName } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
-  const { lon, lat, _id, CityName } = useParams();
+
   const [hotel, setHotel] = useState(location.state?.hotel || null);
   const [latt, setLat] = useState(Number(lat));
   const [lonn, setLon] = useState(Number(lon));
@@ -33,6 +29,21 @@ const HotelDetailPage = () => {
   const [loading, setLoading] = useState(false);
   const [buttonLoading, setButtonLoading] = useState(null);
   const [mapLoading, setMapLoading] = useState(true);
+
+  const hotelIcon = new L.Icon({
+    iconUrl: "https://cdn-icons-png.flaticon.com/512/684/684908.png",
+    iconSize: [30, 40],
+    iconAnchor: [15, 40],
+    popupAnchor: [0, -35],
+  });
+
+  // Try getting hotel from localStorage if state not passed
+  useEffect(() => {
+    if (!hotel) {
+      const stored = getHotelFromLocalStorage(lat, lon, _id);
+      if (stored) setHotel(stored);
+    }
+  }, [hotel, lat, lon, _id]);
 
   useEffect(() => {
     setLat(Number(lat));
@@ -71,10 +82,10 @@ const HotelDetailPage = () => {
   };
 
   const handleBookNow = () => {
-   navigate(`/${CityName}/Hotels/book/${_id}`);
+    navigate(`/${CityName}/Hotels/book/${_id}`);
   };
 
-  if (!hotel) return <div>Loading...</div>;
+  if (!hotel) return <div>Loading hotel details...</div>;
 
   return (
     <div className="flex flex-col md:flex-row h-[calc(100vh-4rem)] bg-[#fff7ed] text-[#1e293b] font-sans overflow-hidden">
@@ -96,7 +107,8 @@ const HotelDetailPage = () => {
         <p className="text-[#334155]">{hotel.description}</p>
         <p className="text-[#475569]">{hotel.address}</p>
         <p className="font-semibold text-xl">₹{hotel.pricePerNight} / night</p>
-        <div className="flex flex-col gap-4">
+
+        <div className="flex flex-col gap-4 mt-4">
           <button
             onClick={() => handleFetchPlaces("cafe")}
             className={`${
@@ -122,6 +134,7 @@ const HotelDetailPage = () => {
               : "🚍 Show Nearest Public Transport"}
           </button>
         </div>
+
         <div className="mt-6 space-y-3">
           <label className="block font-semibold">Ask something about this hotel</label>
           <input
@@ -145,6 +158,7 @@ const HotelDetailPage = () => {
           )}
         </div>
       </div>
+
       <div className="md:w-1/2 h-[50vh] md:h-full relative">
         {mapLoading && (
           <div className="absolute inset-0 z-10 bg-[#f1f5f9] animate-pulse flex items-center justify-center text-[#94a3b8]">
@@ -154,6 +168,7 @@ const HotelDetailPage = () => {
             </div>
           </div>
         )}
+
         <MapContainer
           center={[latt, lonn]}
           zoom={14}

@@ -1,4 +1,4 @@
-import UserContext from "@/context/UserContext";
+import UserContext from "../context/UserContext.js";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link, NavLink, useLocation, useParams } from "react-router-dom";
 

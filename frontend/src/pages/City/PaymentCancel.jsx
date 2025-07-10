@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import AxiosInstance from "@/utils/ApiConfig";
+import AxiosInstance from "../../utils/ApiConfig.js";
 
 const PaymentCancel = () => {
   const [params] = useSearchParams();

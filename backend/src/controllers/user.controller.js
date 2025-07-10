@@ -64,8 +64,7 @@ const signUp = asyncHandler(async (req, res) => {
     "-password -refreshToken"
   );
 
-  const options = { httpOnly: true, secure: true, sameSite: "None",
- };
+  const options = { httpOnly: true, secure: true,sameSite: "None" };
 
   return res
     .status(201)
@@ -142,7 +141,7 @@ const gsignUp = asyncHandler(async (req, res) => {
   const options = {
     httpOnly: true,
     secure: true,
-    sameSite: "None",
+    sameSite: "None"
   };
 
   return res
@@ -190,7 +189,7 @@ const login = asyncHandler(async (req, res) => {
   const options = {
     httpOnly: true,
     secure: true,
-    sameSite: "None",
+    sameSite: "None"
   };
 
   return res
@@ -262,7 +261,7 @@ const glogin = asyncHandler(async (req, res) => {
   const options = {
     httpOnly: true,
     secure: true,
-    sameSite: "None",
+    sameSite: "None"
   };
 
   return res
@@ -299,6 +298,7 @@ const logoutUser = asyncHandler(async(req, res) => {
   const options = {
     httpOnly: true,
     secure: true,
+    sameSite: "None"
   };
 
   return res
@@ -336,7 +336,7 @@ const logoutUser = asyncHandler(async(req, res) => {
     const options = {
       httpOnly: true,
       secure: true,
-      sameSite: "None",
+      sameSite: "None"
     };
 
     return res

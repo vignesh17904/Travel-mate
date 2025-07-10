@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { GeminiResponseH } from "@/utils/GeminiResponse";
+import { GeminiResponseH } from "../../utils/GeminiResponse.js"; 
 import { useParams } from "react-router";
 
 export default function ChatbotWindow({ onClose, hotels }) {

@@ -43,7 +43,7 @@ export default function Header() {
           ? "My Bookings"
           : "Bookings",
     },
-    { to: `/${CityName}/Sample2`, label: "Sample2" },
+    { to: `/${CityName}/aboutus`, label: "About us" },
   ];
 
   const shouldShowAddHotel =

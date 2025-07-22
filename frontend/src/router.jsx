@@ -13,7 +13,7 @@ import OwnerBookings from "./pages/OwnerBookings.jsx";
 import PaymentSuccess from "./pages/City/PaymentSuccess.jsx";
 import PaymentCancel from "./pages/City/PaymentCancel.jsx"; 
 import TouristCardDetails from "./components/TouristCardDetails.jsx";
-
+import AboutUs from "./pages/City/AboutUs.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -54,6 +54,10 @@ const router = createBrowserRouter([
       {
         path: "my-bookings",
         element: <MyBookings />,
+      },
+      {
+        path: "aboutus", 
+        element: <AboutUs />,
       },
     ],
   },

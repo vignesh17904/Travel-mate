@@ -5,6 +5,7 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import AxiosInstance from "@/utils/ApiConfig";
 import { GeminiResponse } from "@/utils/GeminiResponse.js";
+import { getPlaceFromLocalStorage } from "@/utils/placeStorage";
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -16,9 +17,13 @@ L.Icon.Default.mergeOptions({
 const TouristCardDetails = () => {
   const location = useLocation();
   const { lon, lat, CityName } = useParams();
-  const [place, setPlace] = useState(location.state?.place || null);
   const [latt, setLat] = useState(Number(lat));
   const [lonn, setLon] = useState(Number(lon));
+
+  const [place, setPlace] = useState(() => {
+    return location.state?.place || getPlaceFromLocalStorage(lat, lon);
+  });
+
   const [locations, setLocations] = useState([]);
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
@@ -62,7 +67,7 @@ const TouristCardDetails = () => {
     }
   };
 
-  if (!place) return <div>Loading...</div>;
+  if (!place) return <div className="p-6">Loading place data...</div>;
 
   return (
     <div className="flex flex-col md:flex-row h-[calc(100vh-4rem)] bg-[#f0fdf4] text-[#1e293b] font-sans overflow-hidden">

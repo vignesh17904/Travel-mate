@@ -19,6 +19,8 @@ app.get('/health', (req, res) => {
   res.status(200).send('OK');
 });
 
+
+
 import touristrouter from './routes/touristplaces.routes.js';
 app.use('/api/tourist', touristrouter);
 

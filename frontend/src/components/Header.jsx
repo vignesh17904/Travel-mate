@@ -53,40 +53,12 @@ export default function Header() {
     <header className="shadow sticky z-50 top-0 bg-white">
       <nav className="relative border-black-200 px-4 lg:px-6 py-2.5 max-w-screen-xl mx-auto flex items-center justify-between">
 
+        {/* Left - Logo */}
         <Link to="/" className="flex items-center flex-shrink-0 z-10">
           <img src="/logo4.png" className="mr-3 h-12 w-32" alt="Logo" />
         </Link>
 
-        <button
-          onClick={() => setMenuOpen(!menuOpen)}
-          className="inline-flex items-center p-2 ml-3 text-sm text-gray-500 rounded-lg lg:hidden z-10"
-        >
-          <svg
-            className="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            {menuOpen ? (
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
-            ) : (
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            )}
-          </svg>
-        </button>
-
-
+        {/* Center - Nav Links */}
         <div
           className={`absolute left-1/2 transform -translate-x-1/2 top-1/2 -translate-y-1/2 ${menuOpen ? "block" : "hidden"
             } lg:block`}
@@ -110,8 +82,39 @@ export default function Header() {
           </ul>
         </div>
 
-
+        {/* Right - Hamburger, Add Hotel, Avatar */}
         <div className="ml-auto flex items-center space-x-4 z-10">
+          {/* Hamburger (visible only on mobile) */}
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg lg:hidden"
+          >
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              {menuOpen ? (
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              ) : (
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              )}
+            </svg>
+          </button>
+
+          {/* Add Hotel button */}
           {shouldShowAddHotel && (
             <Link
               to={`${location.pathname}/add-hotel`}
@@ -122,7 +125,7 @@ export default function Header() {
             </Link>
           )}
 
-
+          {/* Avatar/Profile */}
           {user && (
             <button onClick={() => setShowProfile(true)} className="cursor-pointer">
               {user.avatar ? (
@@ -141,12 +144,11 @@ export default function Header() {
         </div>
       </nav>
 
-
+      {/* Side Profile Panel */}
       <div
         className={`fixed inset-0 z-50 bg-black/10 transition-opacity duration-300 ease-in-out ${showProfile ? "opacity-100 visible" : "opacity-0 invisible"
           }`}
       >
-
         <div
           ref={profileRef}
           className={`fixed top-0 right-0 h-full w-80 bg-white shadow-lg transform transition-transform duration-300 ease-in-out ${showProfile ? "translate-x-0" : "translate-x-full"
@@ -160,7 +162,6 @@ export default function Header() {
               &times;
             </button>
             <h2 className="text-xl font-bold mb-4">Profile</h2>
-
             {!user ? (
               <div className="flex justify-center items-center h-40">
                 <div className="animate-spin rounded-full h-10 w-10 border-t-4 border-blue-500 border-solid"></div>

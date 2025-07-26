@@ -23,7 +23,7 @@ function AboutUs() {
   const students = [
     {
       name: 'Revanth P',
-      github: 'https://github.com/revanth1234',
+      github: 'https://github.com/revanth102938',
       desc: `Hi, I'm Revanth P, a passionate student from NIT Warangal.
 I built APIs to fetch cafes and transport facilities near tourist places using Leaflet and Geoapify,
 and displayed them on a real-time map. I contributed to the full-stack development of hotel-related pages
@@ -32,7 +32,7 @@ and co-developed Stripe payment integration with complete frontend-backend conne
     },
     {
       name: 'Vignesh',
-      github: 'https://github.com/vignesh4321',
+      github: 'https://github.com/vignesh17904',
       desc: `Hey, I'm Vignesh, a tech enthusiast from NIT Warangal.
 I built dual authentication using Google OAuth and JWT, developed an AI chatbot, and implemented LRU caching
 to improve performance. I worked on displaying tourist places with interactive maps using Geoapify,

@@ -37,19 +37,8 @@ const Home = () => {
       <nav className="w-full absolute top-0 p-5 flex justify-between text-white z-10 items-center">
         <h1 className="text-3xl font-bold cursor-pointer">TravelMate</h1>
 
-        <ul className="flex space-x-5 font-bold cursor-pointer text-black">
-          <li className="hover:text-dark">Contact Us</li>
-        </ul>
 
         <div className="flex items-center space-x-4">
-          <div className="flex items-center space-x-2">
-            <AiOutlineSearch className="text-xl cursor-pointer" />
-            <input
-              className="bg-inherit border-b outline-0 border-gray-300 p-1 w-full"
-              type="text"
-              placeholder="search"
-            />
-          </div>
 
           {user && (
             <button

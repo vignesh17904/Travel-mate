@@ -6,7 +6,9 @@ import { geminiresponse } from "../utils/geminiresponse.js";
 import axios from "axios";
 import { LRUCache } from 'lru-cache';
 
-const touristCache = new LRUCache({ max: 100 });
+const touristCache = new LRUCache({ max: 100,
+   ttl: 1000 * 60 * 4,
+});
 
 const gettouristplaces = asyncHandler(async (req, res) => {
   const { placeid } = req.params;
